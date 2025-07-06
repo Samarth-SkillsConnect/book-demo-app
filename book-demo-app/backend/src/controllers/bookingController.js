@@ -1,4 +1,4 @@
-
+const pool = require('../config/db');
 const DemoSlot = require('../models/DemoSlot');
 const Booking = require('../models/Booking');
 const { sendBookingEmails } = require('../utils/email');
@@ -15,13 +15,6 @@ exports.getSlotsByDate = async (req, res) => {
   }
 };
 
-// // routes/demoSlots.js or similar
-// router.get('/available-dates', async (req, res) => {
-//   const [rows] = await pool.query(
-//     'SELECT DISTINCT date FROM demo_slots WHERE is_booked = 0'
-//   );
-//   res.json(rows.map(r => r.date));
-// });
 
 
 exports.bookDemo = async (req, res) => {
@@ -89,5 +82,23 @@ exports.bookDemo = async (req, res) => {
   } catch (err) {
     console.error('Booking error:', err);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+exports.bulkCreateSlots = async (req, res) => {
+  try {
+    const { slots } = req.body;
+    if (!Array.isArray(slots) || slots.length === 0) {
+      return res.status(400).json({ message: "No slots provided." });
+    }
+    const values = slots.map(({ date, start_time, end_time }) => [date, start_time, end_time, 0]);
+    await pool.query(
+      'INSERT INTO demo_slots (date, start_time, end_time, is_booked) VALUES ?',
+      [values]
+    );
+    res.json({ message: "Slots created successfully!" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to create slots", error: err.message });
   }
 };
