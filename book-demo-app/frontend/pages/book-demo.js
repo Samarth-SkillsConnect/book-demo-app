@@ -15,7 +15,7 @@
 //   const [showSuccess, setShowSuccess] = useState(false);
 //   const [successData, setSuccessData] = useState(null);
 //   const [error, setError] = useState(null);
-//   const [highlightedDates, setHighlightedDates] = useState([]); // <-- NEW STATE
+//   const [highlightedDates, setHighlightedDates] = useState([]);
 
 //   // Fetch available dates for highlighting
 //   useEffect(() => {
@@ -93,16 +93,29 @@
 //     }
 //   };
 
+//   // --- ADMIN BUTTON ---
+//   const handleAdminClick = () => {
+//     // Navigate to admin page (adjust route as needed)
+//     window.location.href = "/admin";
+//   };
+
 //   return (
 //     <div className="min-h-screen bg-gray-50 py-10 px-2">
-//       <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow">
+//       <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow relative">
+//         {/* Admin Button */}
+//         <button
+//           onClick={handleAdminClick}
+//           className="absolute top-4 right-4 bg-blue-700 text-white px-4 py-1 rounded hover:bg-blue-900 text-sm font-semibold shadow-md z-10"
+//         >
+//           Admin
+//         </button>
 //         <CompanyInfo />
 //         <div className="mt-8">
 //           <h2 className="text-xl font-bold mb-2">Select a date for your demo:</h2>
 //           <CalendarPicker
 //             onDateSelect={handleDateSelect}
 //             selectedDate={selectedDate}
-//             highlightedDates={highlightedDates} // <-- Pass as prop
+//             highlightedDates={highlightedDates}
 //           />
 //         </div>
 //         {selectedDate && (
@@ -234,44 +247,60 @@ export default function BookDemoPage() {
 
   // --- ADMIN BUTTON ---
   const handleAdminClick = () => {
-    // Navigate to admin page (adjust route as needed)
     window.location.href = "/admin";
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-2">
-      <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow relative">
-        {/* Admin Button */}
+    <div className="w-screen h-screen bg-gradient-to-br from-blue-100 via-purple-200 to-yellow-100 flex items-center justify-center overflow-auto font-sans">
+      <div className="relative bg-white/90 backdrop-blur-md shadow-2xl w-[99vw] h-[99vh] max-w-3xl max-h-[900px] px-2 sm:px-6 py-3 sm:py-10 rounded-3xl flex flex-col items-center border-2 border-gradient-to-r from-blue-300 via-pink-200 to-yellow-200 animate-fade-in-up transition-all duration-700 mx-auto my-auto overflow-y-auto">
+        
+        {/* Animated Glitter Border */}
+        <div className="absolute inset-0 pointer-events-none z-0 rounded-3xl border-4 border-transparent" style={{boxShadow:"0 0 40px 3px #a78bfa55, 0 0 0 8px #fef3c755 inset"}}>
+          {/* shimmer/shine effect with CSS */}
+        </div>
+        
+        {/* ADMIN BUTTON */}
         <button
           onClick={handleAdminClick}
-          className="absolute top-4 right-4 bg-blue-700 text-white px-4 py-1 rounded hover:bg-blue-900 text-sm font-semibold shadow-md z-10"
+          className="absolute top-5 right-6 bg-gradient-to-r from-blue-600 via-fuchsia-500 to-yellow-400 text-white px-5 py-2 rounded-full shadow-md text-sm font-bold z-20 hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-blue-300 animate-bounce-in"
         >
           Admin
         </button>
+
+        {/* Company Logo with Animation */}
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 via-fuchsia-400 to-yellow-400 flex items-center justify-center mb-8 shadow-lg animate-bounce-in z-10 border-4 border-white/80">
+          <span className="text-white text-4xl font-extrabold tracking-widest select-none drop-shadow-lg">S</span>
+        </div>
         <CompanyInfo />
-        <div className="mt-8">
-          <h2 className="text-xl font-bold mb-2">Select a date for your demo:</h2>
-          <CalendarPicker
-            onDateSelect={handleDateSelect}
-            selectedDate={selectedDate}
-            highlightedDates={highlightedDates}
-          />
+
+        <div className="mt-5 sm:mt-8 w-full animate-fade-in delay-100 z-10">
+          <h2 className="text-lg sm:text-2xl font-bold mb-2 text-gray-800 bg-gradient-to-r from-blue-600 via-fuchsia-400 to-yellow-400 bg-clip-text text-transparent drop-shadow">Select a date for your demo</h2>
+          <div className="rounded-xl bg-white/80 shadow-lg p-3 sm:p-5 transition-all duration-300 animate-slide-in-left">
+            <CalendarPicker
+              onDateSelect={handleDateSelect}
+              selectedDate={selectedDate}
+              highlightedDates={highlightedDates}
+            />
+          </div>
         </div>
         {selectedDate && (
-          <div className="mt-8">
-            <h2 className="text-xl font-bold mb-2">Choose an available time slot:</h2>
-            <SlotSelector
-              slots={slots}
-              onSlotSelect={handleSlotSelect}
-              selectedSlot={selectedSlot}
-              loading={selectedDate && slots === null}
-            />
+          <div className="mt-6 sm:mt-8 w-full animate-fade-in-up delay-200 z-10">
+            <h2 className="text-lg sm:text-2xl font-bold mb-2 text-gray-800 bg-gradient-to-r from-blue-600 via-fuchsia-400 to-yellow-400 bg-clip-text text-transparent drop-shadow">Choose an available time slot</h2>
+            <div className="rounded-xl bg-white/80 shadow-lg p-3 sm:p-5 transition-all duration-300 animate-slide-in-right">
+              <SlotSelector
+                slots={slots}
+                onSlotSelect={handleSlotSelect}
+                selectedSlot={selectedSlot}
+                loading={selectedDate && slots === null}
+              />
+            </div>
           </div>
         )}
         {error && (
-          <div className="mt-6 text-red-600 text-center font-semibold">{error}</div>
+          <div className="mt-6 text-red-600 text-center font-semibold animate-fade-in z-10">{error}</div>
         )}
       </div>
+      {/* Modal overlays */}
       {showForm && selectedSlot && (
         <DemoRegistrationForm
           slot={selectedSlot}
@@ -285,6 +314,24 @@ export default function BookDemoPage() {
           onClose={() => setShowSuccess(false)}
         />
       )}
+      {/* Custom global styles for smooth fit */}
+      <style jsx global>{`
+        html, body, #__next {
+          height: 100%;
+          min-height: 0;
+        }
+        /* Subtle shimmer animation for the glitter border effect */
+        .border-gradient-to-r {
+          background: linear-gradient(90deg, #60a5fa44, #a78bfa44, #fef3c744);
+          background-size: 300% 300%;
+          animation: shimmer 4s linear infinite;
+        }
+        @keyframes shimmer {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+      `}</style>
     </div>
   );
 }
