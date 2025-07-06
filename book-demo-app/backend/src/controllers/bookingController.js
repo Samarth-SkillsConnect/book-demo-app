@@ -15,6 +15,15 @@ exports.getSlotsByDate = async (req, res) => {
   }
 };
 
+// // routes/demoSlots.js or similar
+// router.get('/available-dates', async (req, res) => {
+//   const [rows] = await pool.query(
+//     'SELECT DISTINCT date FROM demo_slots WHERE is_booked = 0'
+//   );
+//   res.json(rows.map(r => r.date));
+// });
+
+
 exports.bookDemo = async (req, res) => {
   try {
     // Trim all inputs
