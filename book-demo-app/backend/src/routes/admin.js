@@ -1,11 +1,3 @@
-// const express = require('express');
-// const router = express.Router();
-// const adminController = require('../controllers/adminController');
-
-// router.post('/set-slot', adminController.createSlot);
-
-// module.exports = router;
-
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');

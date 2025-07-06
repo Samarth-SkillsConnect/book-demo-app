@@ -15,9 +15,9 @@
 // /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./pages/**/*.{js,jsx,ts,tsx}",        // Added ts/tsx for completeness
-    "./components/**/*.{js,jsx,ts,tsx}",   // Added ts/tsx for completeness
-    "./app/**/*.{js,jsx,ts,tsx}",          // Added for Next.js 'app' directory support
+    "./pages/**/*.{js,jsx,ts,tsx}",        
+    "./components/**/*.{js,jsx,ts,tsx}",   
+    "./app/**/*.{js,jsx,ts,tsx}",          
   ],
   theme: {
     extend: {
