@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 
-router.get('/available-dates', async (req, res) => {
+router.get('/available-dates', async (res) => {
   try {
     const [rows] = await pool.query(
       'SELECT DISTINCT date FROM demo_slots WHERE is_booked = 0'
