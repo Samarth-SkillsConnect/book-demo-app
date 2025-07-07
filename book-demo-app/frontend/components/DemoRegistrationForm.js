@@ -35,7 +35,7 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
     if (!lastName) fieldErrors.lastName = "Last name is required";
     if (!validatePhone(mobile)) fieldErrors.mobile = "Valid mobile number with country code required";
     if (!validateEmail(email)) fieldErrors.email = "Valid email required";
-    if (!description) fieldErrors.description = "Description is required";
+    if (!description) fieldErrors.description = "Description required";
     if (guestArr.length > 30) fieldErrors.guests = "Max 30 guests allowed";
     if (!validateGuestEmails(guestArr)) fieldErrors.guests = "All guest emails must be valid";
 
