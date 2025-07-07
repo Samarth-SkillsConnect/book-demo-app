@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import CompanyInfo from "../components/CompanyInfo";
 import CalendarPicker from "../components/CalendarPicker";
@@ -5,7 +6,8 @@ import SlotSelector from "../components/SlotSelector";
 import DemoRegistrationForm from "../components/DemoRegistrationForm";
 import SuccessModal from "../components/SuccessModal";
 
-const API_BASE_URL = "http://localhost:5000/api";
+// const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "https://book-demo-app-1.onrender.com";
 
 export default function BookDemoPage() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -35,13 +37,10 @@ export default function BookDemoPage() {
       if (!res.ok) throw new Error("Failed to fetch slots");
       let data = await res.json();
 
-
       data = data.map(slot => ({
         ...slot,
         date: slot.date ? slot.date.split("T")[0] : slot.date
       }));
-      console.log("DEBUG normalized slots:", data);
-
       setSlots(data);
     } catch (err) {
       setSlots([]);
@@ -107,10 +106,11 @@ export default function BookDemoPage() {
 
   return (
     <main
-      className="w-screen h-screen min-h-screen min-w-full flex flex-col overflow-hidden font-sans"
+      className="w-full min-h-screen flex flex-col overflow-x-hidden font-sans"
       style={{ background: `linear-gradient(135deg, ${themeColor} 0%, #f4f8fa 100%)` }}
     >
-      <header className="flex items-center justify-between w-full px-4 sm:px-10 py-4 bg-white/80 shadow-md backdrop-blur-sm z-10">
+      {/* Responsive Top bar */}
+      <header className="flex items-center justify-between w-full px-4 sm:px-6 md:px-10 py-4 bg-white/80 shadow-md backdrop-blur-sm z-10">
         <section className="flex items-center gap-4">
           <nav className="hidden sm:block">
             <CompanyInfo />
@@ -118,7 +118,7 @@ export default function BookDemoPage() {
         </section>
         <button
           onClick={handleAdminClick}
-          className="bg-gradient-to-r from-[#005e6a] to-[#3ecbdb] text-white px-5 py-2 rounded-full shadow-md text-sm font-bold hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-700"
+          className="bg-gradient-to-r from-[#005e6a] to-[#3ecbdb] text-white px-4 sm:px-5 py-2 rounded-full shadow-md text-xs sm:text-sm font-bold hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-700"
         >
           Admin
         </button>
@@ -126,15 +126,16 @@ export default function BookDemoPage() {
       <section className="sm:hidden px-4 pb-2 pt-2 bg-white/80 w-full">
         <CompanyInfo />
       </section>
-      <section className="flex-1 flex items-center justify-center w-full max-w-[100vw]">
+      {/* Main booking area */}
+      <section className="flex-1 flex items-center justify-center w-full max-w-full">
         {!selectedDate ? (
-          <section className="flex flex-col items-center justify-center w-full h-full">
+          <section className="flex flex-col items-center justify-center w-full h-full px-2 py-4">
             <section
-              className="bg-white rounded-2xl shadow-2xl py-8 px-4 sm:px-8 w-full max-w-md flex flex-col items-center border"
+              className="bg-white rounded-2xl shadow-2xl py-6 px-2 xs:px-2 sm:px-8 w-full max-w-xs xs:max-w-sm sm:max-w-md flex flex-col items-center border"
               style={{ borderColor: themeColor, borderWidth: 2 }}
             >
               <h2
-                className="text-lg sm:text-xl font-bold mb-2 text-center"
+                className="text-base xs:text-lg sm:text-xl font-bold mb-2 text-center"
                 style={{
                   color: themeColor,
                   letterSpacing: '0.01em',
@@ -150,14 +151,14 @@ export default function BookDemoPage() {
             </section>
           </section>
         ) : (
-          <section className="w-full flex flex-col sm:flex-row items-center sm:items-start justify-center gap-8 min-h-[400px] max-h-[500px] px-2">
-
+          <section className="w-full flex flex-col md:flex-row items-center md:items-start justify-center gap-4 md:gap-8 min-h-[400px] max-h-[100vh] px-2 py-4">
+            {/* Calendar */}
             <section
-              className="flex flex-col items-center bg-white rounded-2xl shadow-2xl py-8 px-4 sm:px-6 w-full max-w-md z-10 border"
+              className="flex flex-col items-center bg-white rounded-2xl shadow-2xl py-6 px-2 sm:px-6 w-full max-w-xs xs:max-w-sm sm:max-w-md z-10 border"
               style={{ borderColor: themeColor, borderWidth: 2 }}
             >
               <h2
-                className="text-lg sm:text-xl font-bold mb-2 text-center"
+                className="text-base xs:text-lg sm:text-xl font-bold mb-2 text-center"
                 style={{
                   color: themeColor,
                   letterSpacing: '0.01em',
@@ -171,13 +172,14 @@ export default function BookDemoPage() {
                 highlightedDates={highlightedDates}
               />
             </section>
+            {/* Slot selector card */}
             <section
-              className="flex flex-col items-center bg-white rounded-2xl shadow-2xl w-full max-w-md h-[370px] sm:h-[430px] mt-6 sm:mt-0 border"
+              className="flex flex-col items-center bg-white rounded-2xl shadow-2xl w-full max-w-xs xs:max-w-sm sm:max-w-md h-auto md:h-[430px] mt-6 md:mt-0 border"
               style={{ borderColor: themeColor, borderWidth: 2 }}
             >
               <header className="sticky top-0 z-20 bg-white w-full pt-6 pb-2 rounded-t-2xl border-b" style={{ borderColor: themeColor }}>
                 <h2
-                  className="text-lg sm:text-xl font-bold text-center"
+                  className="text-base xs:text-lg sm:text-xl font-bold text-center"
                   style={{
                     color: themeColor,
                     letterSpacing: '0.01em',
@@ -185,7 +187,6 @@ export default function BookDemoPage() {
                 >
                   Choose an available time slot:
                   <span style={{ display: "block", fontSize: "0.8em", color: "#888", marginTop: 4 }}>
-                    {console.log("DEBUG selectedDate (from CalendarPicker):", selectedDate)}
                     {selectedDate && (() => {
                       const [yyyy, mm, dd] = selectedDate.split("-");
                       return <> [Selected Date: <b>{`${dd}-${mm}-${yyyy}`}</b>]</>
@@ -193,7 +194,7 @@ export default function BookDemoPage() {
                   </span>
                 </h2>
               </header>
-              <section className="flex-1 w-full overflow-y-auto px-3 sm:px-5 pb-4" style={{ maxHeight: "280px" }}>
+              <section className="flex-1 w-full overflow-y-auto px-2 sm:px-5 pb-4" style={{ maxHeight: "280px" }}>
                 <SlotSelector
                   slots={slots}
                   onSlotSelect={handleSlotSelect}
@@ -205,9 +206,11 @@ export default function BookDemoPage() {
           </section>
         )}
       </section>
+      {/* Error message */}
       {error && (
-        <footer className="mt-3 text-red-600 text-center font-semibold z-10">{error}</footer>
+        <footer className="mt-3 text-red-600 text-center font-semibold z-10 px-2">{error}</footer>
       )}
+      {/* Modals */}
       {showForm && selectedSlot && (
         <DemoRegistrationForm
           slot={selectedSlot}
@@ -244,6 +247,20 @@ export default function BookDemoPage() {
         @media (max-width: 640px) {
           .max-w-xs {
             max-width: 98vw !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .max-w-xs, .max-w-sm, .max-w-md {
+            max-width: 99vw !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+          }
+          .py-6, .py-8 {
+            padding-top: 1rem !important;
+            padding-bottom: 1rem !important;
+          }
+          .rounded-2xl {
+            border-radius: 1rem !important;
           }
         }
       `}</style>

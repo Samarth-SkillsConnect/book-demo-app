@@ -7,7 +7,6 @@ exports.getSlotsByDate = async (req, res) => {
   try {
     const { date } = req.query;
     if (!date) return res.status(400).json({ message: 'Date is required' });
-
     const slots = await DemoSlot.getSlotsByDate(date);
     res.json(slots);
   } catch (err) {
