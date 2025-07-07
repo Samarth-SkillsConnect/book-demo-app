@@ -21,6 +21,10 @@ exports.createSlot = async (req, res) => {
   if (!date || !start_time || !end_time || !max_attendees) {
     return res.status(400).json({ message: 'Missing required fields' });
   }
+   if (start_time < '09:00' || end_time > '18:00') {
+    return res.status(400).json({ message: 'Slots must be between 09:00 and 18:00 IST.' });
+  }
+  
   try {
     const [result] = await pool.query(
       `INSERT INTO demo_slots (date, start_time, end_time, max_attendees, is_booked) VALUES (?, ?, ?, ?, 0)`,

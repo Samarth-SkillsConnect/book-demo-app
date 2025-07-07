@@ -27,17 +27,21 @@ const pool = require('../config/db');
 
 const DemoSlot = {
   async getSlotsByDate(date) {
-    // Always select DATE(date) as `date` to ensure a plain string
-    const [rows] = await pool.query(
-      'SELECT id, DATE(date) as date, start_time, end_time, is_booked FROM demo_slots WHERE date = ? AND is_booked = 0',
-      [date]
-    );
-    // Defensive: make sure date is always a string in "YYYY-MM-DD" format
-    return rows.map(slot => ({
-      ...slot,
-      date: typeof slot.date === 'string' ? slot.date : slot.date?.toISOString?.().slice(0, 10)
-    }));
-  },
+  // Only return slots between 09:00 and 18:00 IST
+  const [rows] = await pool.query(
+    `SELECT id, DATE(date) as date, start_time, end_time, is_booked
+     FROM demo_slots
+     WHERE date = ? 
+       AND is_booked = 0
+       AND start_time >= '09:00'
+       AND end_time <= '18:00'`,
+    [date]
+  );
+  return rows.map(slot => ({
+    ...slot,
+    date: typeof slot.date === 'string' ? slot.date : slot.date?.toISOString?.().slice(0, 10)
+  }));
+},
   async getSlotById(id) {
     const [rows] = await pool.query(
       'SELECT id, DATE(date) as date, start_time, end_time, is_booked FROM demo_slots WHERE id = ?',

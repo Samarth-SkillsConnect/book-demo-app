@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Theme Variables */
+:root {
+  --theme-primary: #005e6a;
+  --theme-primary-light: #3ecbdb;
+  --theme-bg-light: #e6f7fa;
+  --theme-card: #fff;
+}
+
+/* Optional: Themed scrollbar for a professional look */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  background: var(--theme-bg-light);
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--theme-primary);
+  border-radius: 4px;
+}
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-primary) var(--theme-bg-light);
+}
