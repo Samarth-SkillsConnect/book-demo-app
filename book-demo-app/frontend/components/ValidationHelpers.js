@@ -42,3 +42,8 @@ export function validateGuestEmails(emails) {
   if (hasDuplicates) return false;
   return cleaned.every(validateEmail);
 }
+
+export function validatedescription(description) {
+  if(description.length > 300) return false;
+  return description;
+}
