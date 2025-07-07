@@ -49,7 +49,7 @@ export default function CalendarPicker({
 
   const themePrimary = "var(--theme-primary)";
 
-  console.log("DEBUG CalendarPicker selectedDate:", selectedDate);
+  // console.log("DEBUG CalendarPicker selectedDate:", selectedDate);
 
   return (
     <section
@@ -132,7 +132,7 @@ export default function CalendarPicker({
         )}
       </div>
       <div style={{ marginTop: 8, fontSize: "0.9em", color: "#888" }}>
-        [Debug: selectedDate = <b>{selectedDate}</b>]
+        {/* [Debug: selectedDate = <b>{selectedDate}</b>] */}
       </div>
     </section>
   );

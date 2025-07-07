@@ -11,7 +11,7 @@ function formatDateDMY(dateStr) {
 }
 
 export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
-  console.log("DEBUG DemoRegistrationForm received slot.date:", slot?.date);
+  // console.log("DEBUG DemoRegistrationForm received slot.date:", slot?.date);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -108,7 +108,7 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
           &nbsp;|&nbsp;
           <span className="font-semibold" style={{ color: themePrimary }}>Time:</span> {formatTimeRange(slot.start_time, slot.end_time)}
           <div style={{ fontSize: "0.85em", color: "#888", marginTop: 2 }}>
-            [Debug: Raw slot.date = <b>{slot?.date}</b>]
+            {/* [Debug: Raw slot.date = <b>{slot?.date}</b>] */}
           </div>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 animate-fade-in-up delay-150">
