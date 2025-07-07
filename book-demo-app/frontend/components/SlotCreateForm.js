@@ -98,7 +98,8 @@ export default function SlotCreateForm() {
         allSlots = allSlots.concat(generateSlotsForWeek(slotConfig, weekDate));
       }
       if (allSlots.length === 0) throw new Error("No slots to create.");
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      // const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://book-demo-app-1.onrender.com";
       const res = await fetch(`${apiUrl}/api/slots/bulk`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
