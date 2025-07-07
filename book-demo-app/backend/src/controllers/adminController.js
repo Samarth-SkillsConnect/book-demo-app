@@ -1,6 +1,5 @@
 const pool = require('../config/db');
 
-// Get all slots with booking counts
 exports.getAllSlots = async (req, res) => {
   try {
     const [slots] = await pool.query(`
@@ -15,7 +14,6 @@ exports.getAllSlots = async (req, res) => {
   }
 };
 
-// Create a new slot
 exports.createSlot = async (req, res) => {
   const { date, start_time, end_time, max_attendees } = req.body;
   if (!date || !start_time || !end_time || !max_attendees) {
@@ -32,7 +30,6 @@ exports.createSlot = async (req, res) => {
   }
 };
 
-// Delete a slot
 exports.deleteSlot = async (req, res) => {
   const { id } = req.params;
   try {
@@ -43,7 +40,6 @@ exports.deleteSlot = async (req, res) => {
   }
 };
 
-// Get all bookings for a slot
 exports.getBookingsForSlot = async (req, res) => {
   const { id } = req.params;
   try {

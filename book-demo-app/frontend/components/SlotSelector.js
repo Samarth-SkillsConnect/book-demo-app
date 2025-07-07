@@ -1,12 +1,22 @@
+
 import { formatTimeRange } from "./TimeHelpers";
+
+function isInDesiredRange(slot) {
+ 
+  return slot.start_time >= "09:00" && slot.end_time <= "18:00";
+}
 
 export default function SlotSelector({ slots, onSlotSelect, selectedSlot, loading }) {
   if (loading) return <div>Loading slots...</div>;
   if (!slots || slots.length === 0) return <div>No slots available for this date.</div>;
 
+  const visibleSlots = slots.filter(isInDesiredRange);
+
+  if (visibleSlots.length === 0) return <div>No slots available in 9am-6pm window.</div>;
+
   return (
     <div className="flex flex-wrap gap-2">
-      {slots.map((slot) => (
+      {visibleSlots.map((slot) => (
         <button
           key={slot.id}
           onClick={() => onSlotSelect(slot)}

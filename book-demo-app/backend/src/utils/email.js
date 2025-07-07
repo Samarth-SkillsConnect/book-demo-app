@@ -1,5 +1,4 @@
 
-const moment = require('moment-timezone');
 const nodemailer = require('nodemailer');
 const { createEvent } = require('ics');
 require('dotenv').config();
@@ -20,7 +19,6 @@ function getDateString(date) {
   throw new Error('slot.date must be a string or Date object');
 }
 
-// Enhanced: supports guests as array or comma-separated string
 function extractValidEmails(guests) {
   if (!guests) return [];
   if (Array.isArray(guests)) {
@@ -32,32 +30,49 @@ function extractValidEmails(guests) {
   return [];
 }
 
+
+function slotTimeString(slot) {
+  let dateStr;
+  if (typeof slot.date === "string") {
+    dateStr = slot.date;
+  } else if (slot.date instanceof Date) {
+    dateStr = slot.date.toISOString().slice(0, 10);
+  } else {
+    throw new Error("slot.date must be a string or Date object");
+  }
+
+  const [y, m, d] = dateStr.split("-");
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const datePretty = `${months[parseInt(m, 10) - 1]} ${parseInt(d, 10)}, ${y}`;
+
+  function to12h(t) {
+    let [h, m] = t.split(":");
+    h = Number(h);
+    const ampm = h >= 12 ? "pm" : "am";
+    h = h % 12 || 12;
+    return `${h}:${m}${ampm}`;
+  }
+
+  return `${datePretty} ${to12h(slot.start_time)} – ${to12h(slot.end_time)}`;
+}
+
+
 function generateICS({ slot, first_name, last_name, email, guests }) {
-  const dateStr = getDateString(slot.date);
+  let dateStr;
+  if (typeof slot.date === "string") {
+    dateStr = slot.date;
+  } else if (slot.date instanceof Date) {
+    dateStr = slot.date.toISOString().slice(0, 10);
+  } else {
+    throw new Error("slot.date must be a string or Date object");
+  }
 
-    const startLocal = moment.tz(`${dateStr} ${slot.start_time}`, "YYYY-MM-DD HH:mm", "Asia/Kolkata");
-  const endLocal = moment.tz(`${dateStr} ${slot.end_time}`, "YYYY-MM-DD HH:mm", "Asia/Kolkata");
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const [startHour, startMinute] = slot.start_time.split(':').map(Number);
+  const [endHour, endMinute] = slot.end_time.split(':').map(Number);
 
-  const startDate = [
-    startLocal.utc().year(),
-    startLocal.utc().month() + 1, // months are zero-indexed
-    startLocal.utc().date(),
-    startLocal.utc().hour(),
-    startLocal.utc().minute()
-  ];
-
-  const endDate = [
-    endLocal.utc().year(),
-    endLocal.utc().month() + 1,
-    endLocal.utc().date(),
-    endLocal.utc().hour(),
-    endLocal.utc().minute()
-  ];
-
-// Organizer email
   const organizerEmail = process.env.GMAIL_USER;
 
-  // Build attendees array, no duplicates, no organizer as attendee
   const attendees = [];
   if (email && email.trim() && email.trim() !== organizerEmail) {
     attendees.push({ name: `${first_name} ${last_name || ''}`.trim(), email: email.trim() });
@@ -77,15 +92,15 @@ function generateICS({ slot, first_name, last_name, email, guests }) {
     createEvent({
       method: 'REQUEST',
       uid: `${Date.now()}-${email}`,
-      start: startDate,
-      end: endDate,
+      start: [y, m, d, startHour, startMinute],
+      end: [y, m, d, endHour, endMinute],
       title: 'Demo Meeting',
       description: 'Demo slot booked with our team!',
       organizer: { name: "Demo Team", email: organizerEmail },
       attendees,
+      location: 'India',
     }, (err, value) => {
       if (err) return reject(err);
-      // Remove X-PUBLISHED-TTL line for mobile compatibility
       const fixedValue = value
         .split('\n')
         .filter(line => !line.startsWith('X-PUBLISHED-TTL'))
@@ -106,9 +121,7 @@ exports.sendBookingEmails = async ({
   guests
 }) => {
   try {
-    console.log('Preparing to generate ICS and send email...');
     const icsContent = await generateICS({ slot, first_name, last_name, email, guests });
-    console.log(icsContent);
 
     const guestList = extractValidEmails(guests);
     const allRecipients = Array.from(
@@ -118,15 +131,14 @@ exports.sendBookingEmails = async ({
     const mailOptions = {
       from: `"SAMS pvt ltd, Sales team" <${process.env.GMAIL_USER}>`,
       to: allRecipients,
-      subject: `Demo Booking Confirmation (${getDateString(slot.date)} ${slot.start_time}-${slot.end_time})`,
+      subject: `Demo Booking Confirmation (${slotTimeString(slot)})`,
       text: `
 Hello,
 
 Your demo has been booked!
 
 Details:
-Date: ${getDateString(slot.date)}
-Time: ${slot.start_time} - ${slot.end_time}
+${slotTimeString(slot)}
 Name: ${first_name} ${last_name || ''}
 Company: ${company_name || '-'}
 Mobile: ${mobile_number}

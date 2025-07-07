@@ -8,7 +8,7 @@ import SuccessModal from "../components/SuccessModal";
 const API_BASE_URL = "http://localhost:5000/api";
 
 export default function BookDemoPage() {
-  const [selectedDate, setSelectedDate] = useState(null); // now a string: 'YYYY-MM-DD'
+  const [selectedDate, setSelectedDate] = useState(null);
   const [slots, setSlots] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -17,7 +17,6 @@ export default function BookDemoPage() {
   const [error, setError] = useState(null);
   const [highlightedDates, setHighlightedDates] = useState([]);
 
-  // Fetch available dates for highlighting
   useEffect(() => {
     fetch(`${API_BASE_URL}/demo-slots/available-dates`)
       .then((res) => res.json())
@@ -25,7 +24,6 @@ export default function BookDemoPage() {
       .catch(() => setHighlightedDates([]));
   }, []);
 
-  // Fetch slots when date changes
   const handleDateSelect = async (dateStr) => {
     setSelectedDate(dateStr);
     setSelectedSlot(null);
@@ -35,7 +33,15 @@ export default function BookDemoPage() {
     try {
       const res = await fetch(`${API_BASE_URL}/demo-slots?date=${dateStr}`);
       if (!res.ok) throw new Error("Failed to fetch slots");
-      const data = await res.json();
+      let data = await res.json();
+
+
+      data = data.map(slot => ({
+        ...slot,
+        date: slot.date ? slot.date.split("T")[0] : slot.date
+      }));
+      console.log("DEBUG normalized slots:", data);
+
       setSlots(data);
     } catch (err) {
       setSlots([]);
@@ -93,62 +99,115 @@ export default function BookDemoPage() {
     }
   };
 
-  // --- ADMIN BUTTON ---
   const handleAdminClick = () => {
     window.location.href = "/admin";
   };
 
+  const themeColor = "#005e6a";
+
   return (
-    <div className="w-screen h-screen bg-gradient-to-br from-blue-100 via-purple-200 to-yellow-100 flex items-center justify-center overflow-auto font-sans">
-      <div className="relative bg-white/90 backdrop-blur-md shadow-2xl w-[99vw] h-[99vh] max-w-3xl max-h-[900px] px-2 sm:px-6 py-3 sm:py-10 rounded-3xl flex flex-col items-center border-2 border-gradient-to-r from-blue-300 via-pink-200 to-yellow-200 animate-fade-in-up transition-all duration-700 mx-auto my-auto overflow-y-auto">
-        
-        {/* Animated Glitter Border */}
-        <div className="absolute inset-0 pointer-events-none z-0 rounded-3xl border-4 border-transparent" style={{boxShadow:"0 0 40px 3px #a78bfa55, 0 0 0 8px #fef3c755 inset"}}>
-          {/* shimmer/shine effect with CSS */}
-        </div>
-        
-        {/* ADMIN BUTTON */}
+    <main
+      className="w-screen h-screen min-h-screen min-w-full flex flex-col overflow-hidden font-sans"
+      style={{ background: `linear-gradient(135deg, ${themeColor} 0%, #f4f8fa 100%)` }}
+    >
+      <header className="flex items-center justify-between w-full px-4 sm:px-10 py-4 bg-white/80 shadow-md backdrop-blur-sm z-10">
+        <section className="flex items-center gap-4">
+          <nav className="hidden sm:block">
+            <CompanyInfo />
+          </nav>
+        </section>
         <button
           onClick={handleAdminClick}
-          className="absolute top-5 right-6 bg-gradient-to-r from-blue-600 via-fuchsia-500 to-yellow-400 text-white px-5 py-2 rounded-full shadow-md text-sm font-bold z-20 hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-blue-300 animate-bounce-in"
+          className="bg-gradient-to-r from-[#005e6a] to-[#3ecbdb] text-white px-5 py-2 rounded-full shadow-md text-sm font-bold hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-700"
         >
           Admin
         </button>
-
-        {/* Company Logo with Animation */}
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 via-fuchsia-400 to-yellow-400 flex items-center justify-center mb-8 shadow-lg animate-bounce-in z-10 border-4 border-white/80">
-          <span className="text-white text-4xl font-extrabold tracking-widest select-none drop-shadow-lg">S</span>
-        </div>
+      </header>
+      <section className="sm:hidden px-4 pb-2 pt-2 bg-white/80 w-full">
         <CompanyInfo />
-
-        <div className="mt-5 sm:mt-8 w-full animate-fade-in delay-100 z-10">
-          <h2 className="text-lg sm:text-2xl font-bold mb-2 text-gray-800 bg-gradient-to-r from-blue-600 via-fuchsia-400 to-yellow-400 bg-clip-text text-transparent drop-shadow">Select a date for your demo</h2>
-          <div className="rounded-xl bg-white/80 shadow-lg p-3 sm:p-5 transition-all duration-300 animate-slide-in-left">
-            <CalendarPicker
-              onDateSelect={handleDateSelect}
-              selectedDate={selectedDate}
-              highlightedDates={highlightedDates}
-            />
-          </div>
-        </div>
-        {selectedDate && (
-          <div className="mt-6 sm:mt-8 w-full animate-fade-in-up delay-200 z-10">
-            <h2 className="text-lg sm:text-2xl font-bold mb-2 text-gray-800 bg-gradient-to-r from-blue-600 via-fuchsia-400 to-yellow-400 bg-clip-text text-transparent drop-shadow">Choose an available time slot</h2>
-            <div className="rounded-xl bg-white/80 shadow-lg p-3 sm:p-5 transition-all duration-300 animate-slide-in-right">
-              <SlotSelector
-                slots={slots}
-                onSlotSelect={handleSlotSelect}
-                selectedSlot={selectedSlot}
-                loading={selectedDate && slots === null}
+      </section>
+      <section className="flex-1 flex items-center justify-center w-full max-w-[100vw]">
+        {!selectedDate ? (
+          <section className="flex flex-col items-center justify-center w-full h-full">
+            <section
+              className="bg-white rounded-2xl shadow-2xl py-8 px-4 sm:px-8 w-full max-w-md flex flex-col items-center border"
+              style={{ borderColor: themeColor, borderWidth: 2 }}
+            >
+              <h2
+                className="text-lg sm:text-xl font-bold mb-2 text-center"
+                style={{
+                  color: themeColor,
+                  letterSpacing: '0.01em',
+                }}
+              >
+                Select a date for your demo
+              </h2>
+              <CalendarPicker
+                onDateSelect={handleDateSelect}
+                selectedDate={selectedDate}
+                highlightedDates={highlightedDates}
               />
-            </div>
-          </div>
+            </section>
+          </section>
+        ) : (
+          <section className="w-full flex flex-col sm:flex-row items-center sm:items-start justify-center gap-8 min-h-[400px] max-h-[500px] px-2">
+
+            <section
+              className="flex flex-col items-center bg-white rounded-2xl shadow-2xl py-8 px-4 sm:px-6 w-full max-w-md z-10 border"
+              style={{ borderColor: themeColor, borderWidth: 2 }}
+            >
+              <h2
+                className="text-lg sm:text-xl font-bold mb-2 text-center"
+                style={{
+                  color: themeColor,
+                  letterSpacing: '0.01em',
+                }}
+              >
+                Select a date for your demo
+              </h2>
+              <CalendarPicker
+                onDateSelect={handleDateSelect}
+                selectedDate={selectedDate}
+                highlightedDates={highlightedDates}
+              />
+            </section>
+            <section
+              className="flex flex-col items-center bg-white rounded-2xl shadow-2xl w-full max-w-md h-[370px] sm:h-[430px] mt-6 sm:mt-0 border"
+              style={{ borderColor: themeColor, borderWidth: 2 }}
+            >
+              <header className="sticky top-0 z-20 bg-white w-full pt-6 pb-2 rounded-t-2xl border-b" style={{ borderColor: themeColor }}>
+                <h2
+                  className="text-lg sm:text-xl font-bold text-center"
+                  style={{
+                    color: themeColor,
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  Choose an available time slot:
+                  <span style={{ display: "block", fontSize: "0.8em", color: "#888", marginTop: 4 }}>
+                    {console.log("DEBUG selectedDate (from CalendarPicker):", selectedDate)}
+                    {selectedDate && (() => {
+                      const [yyyy, mm, dd] = selectedDate.split("-");
+                      return <> [Selected Date: <b>{`${dd}-${mm}-${yyyy}`}</b>]</>
+                    })()}
+                  </span>
+                </h2>
+              </header>
+              <section className="flex-1 w-full overflow-y-auto px-3 sm:px-5 pb-4" style={{ maxHeight: "280px" }}>
+                <SlotSelector
+                  slots={slots}
+                  onSlotSelect={handleSlotSelect}
+                  selectedSlot={selectedSlot}
+                  loading={selectedDate && slots === null}
+                />
+              </section>
+            </section>
+          </section>
         )}
-        {error && (
-          <div className="mt-6 text-red-600 text-center font-semibold animate-fade-in z-10">{error}</div>
-        )}
-      </div>
-      {/* Modal overlays */}
+      </section>
+      {error && (
+        <footer className="mt-3 text-red-600 text-center font-semibold z-10">{error}</footer>
+      )}
       {showForm && selectedSlot && (
         <DemoRegistrationForm
           slot={selectedSlot}
@@ -162,24 +221,32 @@ export default function BookDemoPage() {
           onClose={() => setShowSuccess(false)}
         />
       )}
-      {/* Custom global styles for smooth fit */}
       <style jsx global>{`
         html, body, #__next {
+          min-height: 100%;
           height: 100%;
-          min-height: 0;
         }
-        /* Subtle shimmer animation for the glitter border effect */
-        .border-gradient-to-r {
-          background: linear-gradient(90deg, #60a5fa44, #a78bfa44, #fef3c744);
-          background-size: 300% 300%;
-          animation: shimmer 4s linear infinite;
+        body {
+          overscroll-behavior: none;
         }
-        @keyframes shimmer {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+        .scrollbar-thin::-webkit-scrollbar {
+          width: 6px;
+          background: #e4efef;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+          background: #005e6a;
+          border-radius: 4px;
+        }
+        .scrollbar-thin {
+          scrollbar-width: thin;
+          scrollbar-color: #005e6a #e4efef;
+        }
+        @media (max-width: 640px) {
+          .max-w-xs {
+            max-width: 98vw !important;
+          }
         }
       `}</style>
-    </div>
+    </main>
   );
 }
