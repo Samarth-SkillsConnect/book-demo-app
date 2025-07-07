@@ -1,6 +1,5 @@
 const DemoSlot = require('../models/DemoSlot');
 
-// Get all demo slots for a specific date (query param: date=YYYY-MM-DD)
 exports.getSlotsByDate = async (req, res) => {
   try {
     const { date } = req.query;
@@ -14,7 +13,6 @@ exports.getSlotsByDate = async (req, res) => {
   }
 };
 
-// Create a new demo slot
 exports.createDemoSlot = async (req, res) => {
   try {
     const { date, startTime, endTime } = req.body;
@@ -28,14 +26,13 @@ exports.createDemoSlot = async (req, res) => {
   }
 };
 
-// Delete a demo slot
 exports.deleteDemoSlot = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) {
       return res.status(400).json({ message: 'Slot ID is required' });
     }
-    // Optional: add a check to see if the slot exists first
+
     await DemoSlot.deleteSlot(id);
     res.json({ message: 'Demo slot deleted' });
   } catch (err) {

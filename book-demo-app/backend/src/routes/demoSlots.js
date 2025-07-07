@@ -2,13 +2,12 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 
-// Endpoint: GET /api/demo-slots/available-dates
 router.get('/available-dates', async (req, res) => {
   try {
     const [rows] = await pool.query(
       'SELECT DISTINCT date FROM demo_slots WHERE is_booked = 0'
     );
-    // Treat every date as a string, never use .toISOString()
+   
     const dates = rows.map(row => String(row.date));
     res.json(dates);
   } catch (err) {

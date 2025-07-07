@@ -10,7 +10,6 @@ export default function AdminLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-    // TODO: Replace with backend authentication
     if (username === "admin" && password === "admin") {
       router.push("/admin/dashboard");
     } else {

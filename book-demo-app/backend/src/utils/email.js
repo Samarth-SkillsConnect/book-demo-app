@@ -30,9 +30,8 @@ function extractValidEmails(guests) {
   return [];
 }
 
-// Format slot time for display (no timezone logic)
+
 function slotTimeString(slot) {
-  // Ensure slot.date is always a string for split
   let dateStr;
   if (typeof slot.date === "string") {
     dateStr = slot.date;
@@ -57,9 +56,8 @@ function slotTimeString(slot) {
   return `${datePretty} ${to12h(slot.start_time)} – ${to12h(slot.end_time)}`;
 }
 
-// Generate ICS (no timezone logic)
+
 function generateICS({ slot, first_name, last_name, email, guests }) {
-  // Ensure slot.date is always a string for split
   let dateStr;
   if (typeof slot.date === "string") {
     dateStr = slot.date;
@@ -73,10 +71,8 @@ function generateICS({ slot, first_name, last_name, email, guests }) {
   const [startHour, startMinute] = slot.start_time.split(':').map(Number);
   const [endHour, endMinute] = slot.end_time.split(':').map(Number);
 
-  // Organizer email
   const organizerEmail = process.env.GMAIL_USER;
 
-  // Build attendees array, no duplicates, no organizer as attendee
   const attendees = [];
   if (email && email.trim() && email.trim() !== organizerEmail) {
     attendees.push({ name: `${first_name} ${last_name || ''}`.trim(), email: email.trim() });

@@ -15,11 +15,8 @@ exports.getSlotsByDate = async (req, res) => {
   }
 };
 
-
-
 exports.bookDemo = async (req, res) => {
   try {
-    // Trim all inputs
     const {
       slot_id,
       first_name = "",
@@ -32,17 +29,15 @@ exports.bookDemo = async (req, res) => {
     } = req.body;
 
     const ip_address = req.ip;
-    const test = req.query.test === 'true';
+    // const test = req.query.test === 'true';
 
     const slot = await DemoSlot.getSlotById(slot_id);
     if (!slot || slot.is_booked) return res.status(400).json({ message: 'Slot not available' });
 
-    // Rate limiting logic (uncomment if needed)
     // if (!test && await Booking.hasBookedInLast24Hours(ip_address)) {
     //   return res.status(403).json({ message: 'You have already booked in the last 24 hours.' });
     // }
 
-    // Always pass guests as an array for clarity and to avoid empty/malformed emails downstream
     const guestArray = guests
       ? guests.split(',').map(g => g.trim()).filter(g => g && g.includes('@'))
       : [];
@@ -55,13 +50,12 @@ exports.bookDemo = async (req, res) => {
       mobile_number: mobile_number.trim(),
       email: email.trim(),
       description: description.trim(),
-      guests: guestArray.join(','), // Save as comma-separated for DB
+      guests: guestArray.join(','),
       ip_address
     });
 
     await DemoSlot.bookSlot(slot_id);
 
-    // Await email sending and catch possible errors (do not crash on email failure)
     try {
       await sendBookingEmails({
         slot,
@@ -71,11 +65,10 @@ exports.bookDemo = async (req, res) => {
         mobile_number: mobile_number.trim(),
         email: email.trim(),
         description: description.trim(),
-        guests: guestArray.join(',') // Now passing as array
+        guests: guestArray.join(',')
       });
     } catch (emailErr) {
       console.error('Booking was successful but failed to send email:', emailErr);
-      // Optional: still send 200, or set a warning in the response etc.
     }
 
     res.json({ message: 'Booking successful' });
@@ -84,7 +77,6 @@ exports.bookDemo = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 exports.bulkCreateSlots = async (req, res) => {
   try {
