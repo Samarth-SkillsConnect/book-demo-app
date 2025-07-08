@@ -6,8 +6,8 @@ import SlotSelector from "../components/SlotSelector";
 import DemoRegistrationForm from "../components/DemoRegistrationForm";
 import SuccessModal from "../components/SuccessModal";
 
-const API_BASE_URL = "http://localhost:5000/api";
-// const API_BASE_URL = "https://book-demo-app-1.onrender.com/api";
+// const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "https://book-demo-app-1.onrender.com/api";
 
 export default function BookDemoPage() {
   const [selectedDate, setSelectedDate] = useState(null);
