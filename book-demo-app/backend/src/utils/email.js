@@ -126,7 +126,7 @@ exports.sendBookingEmails = async ({
     );
 
 
-    const companyLogo = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fcompany-logo&psig=AOvVaw0D__bCd5j2oBasLRA2XnLa&ust=1752036007598000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJjP0PC4rI4DFQAAAAAdAAAAABAE";
+    const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1751953073/logo_vb5lfc.png";
     const companyName = "SAMS Pvt Ltd";
 
 
