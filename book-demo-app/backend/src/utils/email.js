@@ -1,4 +1,3 @@
-
 const nodemailer = require('nodemailer');
 const { createEvent } = require('ics');
 require('dotenv').config();
@@ -30,7 +29,6 @@ function extractValidEmails(guests) {
   return [];
 }
 
-
 function slotTimeString(slot) {
   let dateStr;
   if (typeof slot.date === "string") {
@@ -55,7 +53,6 @@ function slotTimeString(slot) {
 
   return `${datePretty} ${to12h(slot.start_time)} – ${to12h(slot.end_time)}`;
 }
-
 
 function generateICS({ slot, first_name, last_name, email, guests }) {
   let dateStr;
@@ -128,8 +125,73 @@ exports.sendBookingEmails = async ({
       new Set([email, ADMIN_EMAIL, ...guestList].filter(Boolean))
     );
 
+    // REPLACE with your company logo URL (must be https and public, or use base64 if needed)
+    const companyLogo = "https://i.imgur.com/1Q9Z1Zm.png";
+    const companyName = "SAMS Pvt Ltd";
+
+    // Create a nice HTML email
+    const html = `
+      <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow:0 2px 18px #0001;">
+          <tr>
+            <td align="center" style="padding: 36px 0 10px 0;">
+              <img src="${companyLogo}" alt="${companyName} Logo" width="90" height="90" style="border-radius: 50%; box-shadow:0 2px 8px #0002;" />
+              <h1 style="margin: 18px 0 0 0; font-size: 2.1rem; color: #006691; letter-spacing:1px;">${companyName}</h1>
+              <div style="font-size: 1.24rem; color:#22b8ba; margin-top: 8px; font-weight: 600;">Demo Booking Confirmation</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 12px 34px 0 34px;">
+              <p style="font-size:1.1rem; color:#222; margin: 0;">Hello <b>${first_name}${last_name ? " " + last_name : ""}</b>,</p>
+              <p style="color:#474747; margin: 10px 0 22px 0;">Your demo with <b>${companyName}</b> has been successfully booked! Kindly find the details below:</p>
+              <table width="100%" cellpadding="0" cellspacing="0" style="background: #f8fcff; border-radius: 8px; padding: 12px 0; margin: 0 0 18px 0;">
+                <tr>
+                  <td style="padding: 6px 0; font-weight:600; color:#006691;">Date & Time:</td>
+                  <td style="padding: 6px 0; color:#232323;">${slotTimeString(slot)}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; font-weight:600; color:#006691;">Name:</td>
+                  <td style="padding: 6px 0; color:#232323;">${first_name} ${last_name || ''}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; font-weight:600; color:#006691;">Company:</td>
+                  <td style="padding: 6px 0; color:#232323;">${company_name || '-'}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; font-weight:600; color:#006691;">Mobile:</td>
+                  <td style="padding: 6px 0; color:#232323;">${mobile_number}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; font-weight:600; color:#006691;">Description:</td>
+                  <td style="padding: 6px 0; color:#232323;">${description}</td>
+                </tr>
+                ${guestList.length > 0 ? `
+                <tr>
+                  <td style="padding: 6px 0; font-weight:600; color:#006691; vertical-align:top;">Guests:</td>
+                  <td style="padding: 6px 0; color:#232323;">
+                    <ul style="margin:0; padding-left:16px; color:#232323;">
+                      ${guestList.map(g => `<li>${g}</li>`).join('')}
+                    </ul>
+                  </td>
+                </tr>
+                ` : ""}
+              </table>
+              <div style="margin: 18px 0 18px 0;">
+                <a href="#" style="display: inline-block; background: linear-gradient(90deg,#006691,#22b8ba); color:#fff; font-weight:600; padding:12px 34px; border-radius:24px; text-decoration:none; font-size:1.03rem; letter-spacing:0.5px; box-shadow:0 2px 8px #22b8ba22;">Add to Calendar</a>
+              </div>
+              <div style="font-size:0.95rem; color:#888; margin: 12px 0 0 0;">You will find a calendar invitation attached to this email.</div>
+              <div style="margin-top:32px; color:#aaa; font-size:13px; text-align:center;">
+                <hr style="border-top:1px dashed #eee; margin-bottom:12px;" />
+                &copy; ${new Date().getFullYear()} ${companyName}. All rights reserved.
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    `;
+
     const mailOptions = {
-      from: `"SAMS pvt ltd, Sales team" <${process.env.GMAIL_USER}>`,
+      from: `"${companyName} Sales Team" <${process.env.GMAIL_USER}>`,
       to: allRecipients,
       subject: `Demo Booking Confirmation (${slotTimeString(slot)})`,
       text: `
@@ -143,10 +205,12 @@ Name: ${first_name} ${last_name || ''}
 Company: ${company_name || '-'}
 Mobile: ${mobile_number}
 Description: ${description}
+${guestList.length > 0 ? `Guests: ${guestList.join(', ')}` : ''}
 
 Thanks,
-Demo Team
+${companyName}
       `,
+      html,
       alternatives: [{
         contentType: 'text/calendar; method=REQUEST; charset="UTF-8"',
         content: icsContent,

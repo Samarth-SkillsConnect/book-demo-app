@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@pathofdev/react-tag-input": "^1.0.7",
     "date-fns": "^4.1.0",
     "next": "15.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-phone-input-2": "^2.15.1",
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
