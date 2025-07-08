@@ -52,3 +52,63 @@ exports.getBookingsForSlot = async (req, res) => {
     res.status(500).json({ message: 'Error fetching bookings', error: err.message });
   }
 };
+
+
+// Accept booking and set meet_link
+exports.acceptBooking = async (req, res) => {
+  const { id } = req.params;
+  const { meet_link } = req.body;
+  try {
+    await pool.query(
+      "UPDATE bookings SET status = 'accepted', meet_link = ? WHERE id = ?",
+      [meet_link, id]
+    );
+    res.json({ message: "Booking accepted" });
+  } catch (err) {
+    res.status(500).json({ message: "Error accepting booking", error: err.message });
+  }
+};
+
+// Reject booking
+exports.rejectBooking = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await pool.query(
+      "UPDATE bookings SET status = 'rejected', meet_link = NULL WHERE id = ?",
+      [id]
+    );
+    res.json({ message: "Booking rejected" });
+  } catch (err) {
+    res.status(500).json({ message: "Error rejecting booking", error: err.message });
+  }
+};
+
+// Optionally: update meet link for accepted booking
+exports.setBookingMeetLink = async (req, res) => {
+  const { id } = req.params;
+  const { meet_link } = req.body;
+  try {
+    await pool.query(
+      "UPDATE bookings SET meet_link = ? WHERE id = ? AND status = 'accepted'",
+      [meet_link, id]
+    );
+    res.json({ message: "Meet link updated" });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating meet link", error: err.message });
+  }
+};
+
+exports.getAllBookings = async (req, res) => {
+  try {
+    // Optionally join with slots for slot info
+    const [bookings] = await pool.query(`
+      SELECT b.*, s.date, s.start_time, s.end_time
+      FROM bookings b
+      LEFT JOIN demo_slots s ON b.slot_id = s.id
+      ORDER BY b.created_at DESC
+    `);
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching bookings', error: err.message });
+  }
+};
