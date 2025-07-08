@@ -28,7 +28,7 @@ exports.bookDemo = async (req, res) => {
     } = req.body;
 
     const ip_address = req.ip;
-    // const test = req.query.test === 'true';
+    const test = req.query.test === 'true';
 
     const slot = await DemoSlot.getSlotById(slot_id);
     if (!slot || slot.is_booked) return res.status(400).json({ message: 'Slot not available' });
