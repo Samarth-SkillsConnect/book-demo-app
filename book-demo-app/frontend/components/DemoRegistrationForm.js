@@ -1,3 +1,4 @@
+
 // import { useState, useRef } from "react";
 // import {
 //   validateEmail,
@@ -150,47 +151,57 @@
 //     }));
 //   };
 
-//   // Space key handler for guests
+//   // Helper to add multiple emails from a string (comma or space separated)
+//   const addGuestsFromString = (str) => {
+//     let emails = str
+//       .split(/[\s,]+/)
+//       .map(e => e.trim())
+//       .filter(e => e.length);
+//     let newGuests = [...guests];
+//     let skipped = [];
+//     for (let emailVal of emails) {
+//       if (!validateEmail(emailVal)) {
+//         skipped.push(emailVal);
+//         continue;
+//       }
+//       if (newGuests.includes(emailVal)) {
+//         skipped.push(emailVal);
+//         continue;
+//       }
+//       if (newGuests.length >= 30) {
+//         break;
+//       }
+//       if (email && emailVal.toLowerCase() === email.toLowerCase()) {
+//         skipped.push(emailVal);
+//         continue;
+//       }
+//       newGuests.push(emailVal);
+//     }
+//     setGuests(newGuests);
+//     setGuestInput("");
+//     setErrors((prev) => ({
+//       ...prev,
+//       guests: skipped.length
+//         ? `Skipped invalid/duplicate/self emails: ${skipped.join(", ")}`
+//         : ""
+//     }));
+//   };
+
+//   // Modified input keydown for space/comma/enter
 //   const handleGuestInputKeyDown = (e) => {
-//     if (e.key === " ") {
+//     if (e.key === " " || e.key === "," || e.key === "Enter") {
 //       e.preventDefault();
-//       const newEmail = guestInput.trim();
-//       if (!newEmail) return;
-//       if (!validateEmail(newEmail)) {
-//         setErrors((prev) => ({
-//           ...prev,
-//           guests: "Invalid guest email address"
-//         }));
-//         return;
-//       }
-//       if (guests.includes(newEmail)) {
-//         setErrors((prev) => ({
-//           ...prev,
-//           guests: "Duplicate guest email"
-//         }));
-//         return;
-//       }
-//       if (guests.length >= 30) {
-//         setErrors((prev) => ({
-//           ...prev,
-//           guests: "Max 30 guests allowed"
-//         }));
-//         return;
-//       }
-//       if (email && newEmail.toLowerCase() === email.toLowerCase()) {
-//         setErrors((prev) => ({
-//           ...prev,
-//           guests: "You cannot add yourself as a guest"
-//         }));
-//         return;
-//       }
-//       const newGuests = [...guests, newEmail];
-//       setGuests(newGuests);
-//       setGuestInput("");
-//       setErrors((prev) => ({
-//         ...prev,
-//         guests: validateField("guests", newGuests, { ...allValues, guests: newGuests })
-//       }));
+//       if (guestInput.trim() === "") return;
+//       addGuestsFromString(guestInput);
+//     }
+//   };
+
+//   // Handle paste event
+//   const handleGuestInputPaste = (e) => {
+//     const paste = (e.clipboardData || window.clipboardData).getData('text');
+//     if (paste.includes(",") || paste.includes(" ") || paste.includes("\n")) {
+//       e.preventDefault();
+//       addGuestsFromString(paste);
 //     }
 //   };
 
@@ -206,14 +217,22 @@
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
-//     const newErrors = {};
-//     Object.keys(allValues).forEach(field => {
-//       const error = validateField(field, allValues[field], allValues);
-//       if (error) newErrors[field] = error;
-//     });
-//     if (Object.keys(newErrors).length) {
-//       setErrors(newErrors);
-//       setGuestInputTouched(true);
+//     const guestArr = guests
+//       .split(",")
+//       .map((g) => g.trim())
+//       .filter((g) => g.length);
+
+//     const fieldErrors = {};
+//     if (!firstName) fieldErrors.firstName = "First name is required";
+//     if (!lastName) fieldErrors.lastName = "Last name is required";
+//     if (!validatePhone(mobile)) fieldErrors.mobile = "Valid mobile number with country code required";
+//     if (!validateEmail(email)) fieldErrors.email = "Valid email required";
+//     if (!description) fieldErrors.description = "Description is required";
+//     if (guestArr.length > 30) fieldErrors.guests = "Max 30 guests allowed";
+//     if (!validateGuestEmails(guestArr)) fieldErrors.guests = "All guest emails must be valid";
+
+//     if (Object.keys(fieldErrors).length) {
+//       setErrors(fieldErrors);
 //       return;
 //     }
 //     setSubmitting(true);
@@ -375,7 +394,7 @@
 //           </div>
 //           <div>
 //             <label className="block mb-1 font-medium" style={{ color: themePrimary }}>
-//               Guests <span className="text-xs text-gray-400">(type email and press space, max 30)</span>
+//               Guests <span className="text-xs text-gray-400">(type or paste emails, press space/comma/enter, max 30)</span>
 //             </label>
 //             <div className="w-full border-2 rounded-lg px-2 py-2 bg-white/80 min-h-[48px] flex flex-wrap items-center">
 //               {guests.map((guest, idx) => (
@@ -398,13 +417,14 @@
 //                 ref={guestInputRef}
 //                 type="text"
 //                 className="flex-1 min-w-[120px] bg-transparent border-none focus:outline-none text-[color:var(--theme-primary)]"
-//                 placeholder="Add guest email and press space"
+//                 placeholder="Add guest email and press space/comma/enter or paste list"
 //                 value={guestInput}
 //                 onChange={e => {
 //                   setGuestInput(e.target.value);
 //                   setErrors((prev) => ({ ...prev, guests: "" }));
 //                 }}
 //                 onKeyDown={handleGuestInputKeyDown}
+//                 onPaste={handleGuestInputPaste}
 //                 onBlur={() => setGuestInputTouched(true)}
 //                 style={{ color: themePrimary }}
 //               />
@@ -436,8 +456,6 @@
 //     </div>
 //   );
 // }
-
-
 
 
 import { useState, useRef } from "react";
@@ -658,10 +676,9 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const guestArr = guests
-      .split(",")
-      .map((g) => g.trim())
-      .filter((g) => g.length);
+
+    // No need to split guests! It's already an array.
+    const guestArr = guests.map((g) => g.trim()).filter((g) => g.length);
 
     const fieldErrors = {};
     if (!firstName) fieldErrors.firstName = "First name is required";
@@ -684,7 +701,7 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
       mobile_number: mobile,
       email,
       description,
-      guests: guests.join(","),
+      guests: guests.join(","), // <--- Send as comma separated string to backend
     });
     setSubmitting(false);
   };

@@ -125,11 +125,11 @@ exports.sendBookingEmails = async ({
       new Set([email, ADMIN_EMAIL, ...guestList].filter(Boolean))
     );
 
-    // REPLACE with your company logo URL (must be https and public, or use base64 if needed)
-    const companyLogo = "https://i.imgur.com/1Q9Z1Zm.png";
+
+    const companyLogo = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fcompany-logo&psig=AOvVaw0D__bCd5j2oBasLRA2XnLa&ust=1752036007598000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJjP0PC4rI4DFQAAAAAdAAAAABAE";
     const companyName = "SAMS Pvt Ltd";
 
-    // Create a nice HTML email
+
     const html = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
         <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow:0 2px 18px #0001;">
