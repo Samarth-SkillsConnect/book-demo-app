@@ -62,7 +62,7 @@ export default function CalendarPicker({
       <div className="flex justify-between items-center mb-3">
         <button
           onClick={handlePrevMonth}
-          className="p-2 rounded-full bg-[color:var(--theme-bg-light)] hover:bg-[color:var(--theme-primary-light)] shadow transition-all active:scale-90 animate-bounce-in border"
+          className="p-2 rounded-full bg-[color:var(--theme-bg-light)] hover:bg-[color:var(--theme-primary-light)] shadow active:scale-90 animate-bounce-in border"
           style={{ borderColor: themePrimary }}
           aria-label="Previous month"
         >
@@ -76,7 +76,7 @@ export default function CalendarPicker({
         </span>
         <button
           onClick={handleNextMonth}
-          className="p-2 rounded-full bg-[color:var(--theme-bg-light)] hover:bg-[color:var(--theme-primary-light)] shadow transition-all active:scale-90 animate-bounce-in border"
+          className="p-2 rounded-full bg-[color:var(--theme-bg-light)] hover:bg-[color:var(--theme-primary-light)] shadow active:scale-90 animate-bounce-in border"
           style={{ borderColor: themePrimary }}
           aria-label="Next month"
         >
@@ -109,7 +109,7 @@ export default function CalendarPicker({
                 onDateSelect(formatted);
               }}
               className={[
-                "py-2 rounded-lg font-bold transition-all duration-200 shadow-sm outline-none focus:ring-2",
+                "py-2 rounded-lg font-bold duration-200 shadow-sm outline-none focus:ring-2",
                 selectedDate &&
                 formatLocalDate(date) === selectedDate
                   ? "bg-[color:var(--theme-primary)] text-white scale-110 shadow-lg border-2 border-[color:var(--theme-primary-light)] animate-bounce-in"

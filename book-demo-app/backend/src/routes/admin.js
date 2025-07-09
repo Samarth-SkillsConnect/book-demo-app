@@ -23,4 +23,6 @@ router.post('/slots/custom', adminController.createOrCloseCustomSlot);
 
 router.post('/slots/bulk-generate', adminController.bulkCreateSlots);
 
+router.delete('/slots/day/:day', adminController.deleteSlotsByDayOfWeek);
+
 module.exports = router;

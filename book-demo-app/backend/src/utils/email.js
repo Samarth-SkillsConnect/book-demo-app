@@ -126,8 +126,8 @@ exports.sendBookingEmails = async ({
     );
 
 
-    const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1751953073/logo_vb5lfc.png";
-    const companyName = "SAMS Pvt Ltd";
+    const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752064329/image_rx0mkl.png";
+    const companyName = "Skills Connect";
 
 
     const html = `
@@ -197,7 +197,7 @@ exports.sendBookingEmails = async ({
       text: `
 Hello,
 
-Your demo has been booked!
+Your request for demo has been initiated!
 
 Details:
 ${slotTimeString(slot)}
@@ -208,6 +208,7 @@ Description: ${description}
 ${guestList.length > 0 ? `Guests: ${guestList.join(', ')}` : ''}
 
 Thanks,
+We're happy to assist you.
 ${companyName}
       `,
       html,
