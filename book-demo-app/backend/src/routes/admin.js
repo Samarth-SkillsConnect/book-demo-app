@@ -19,6 +19,8 @@ router.post('/bookings/:id/reject', adminController.rejectBooking);
 
 router.post('/bookings/:id/set-link', adminController.setBookingMeetLink);
 
+router.post('/slots/custom', adminController.createOrCloseCustomSlot);
 
+router.post('/slots/bulk-generate', adminController.bulkCreateSlots);
 
 module.exports = router;

@@ -1,3 +1,4 @@
+
 // import { useEffect, useState } from "react";
 // import { useRouter } from "next/router";
 // import SlotCreateForm from "@/components/SlotCreateForm";
@@ -5,7 +6,6 @@
 // // Simple utility for filtering
 // function filterBookings(bookings, filters) {
 //   return bookings.filter((b) => {
-//     // Date/Time
 //     if (filters.dateTime) {
 //       const dt = filters.dateTime.toLowerCase();
 //       if (
@@ -18,11 +18,9 @@
 //         return false;
 //       }
 //     }
-//     // Email
 //     if (filters.email && b.email && !b.email.toLowerCase().includes(filters.email.toLowerCase())) {
 //       return false;
 //     }
-//     // Name (first or last)
 //     if (
 //       filters.name &&
 //       !(
@@ -32,7 +30,6 @@
 //     ) {
 //       return false;
 //     }
-//     // Company
 //     if (
 //       filters.company &&
 //       b.company_name &&
@@ -40,11 +37,9 @@
 //     ) {
 //       return false;
 //     }
-//     // Status
 //     if (filters.status && b.status && b.status.toLowerCase() !== filters.status.toLowerCase()) {
 //       return false;
 //     }
-//     // Phone
 //     if (
 //       filters.phone &&
 //       b.mobile_number &&
@@ -193,115 +188,119 @@
 //             </h2>
 //             <div className="flex gap-2">
 //               <button
-//                 className="bg-green-700 text-white px-4 py-2 rounded-lg shadow hover:bg-green-800 transition-all text-sm font-semibold"
-//                 onClick={handleAddSlots}
-//               >
-//                 View Slots
-//               </button>
-//               <button
 //                 className="bg-[#005e6a] text-white px-4 py-2 rounded-lg shadow hover:bg-[#077e8d] transition-all text-sm font-semibold"
 //                 onClick={() => setFiltersOpen((prev) => !prev)}
 //               >
 //                 {filtersOpen ? "Hide Filters" : "Filters"}
 //               </button>
-              
+//               <button
+//                 className="bg-green-700 text-white px-4 py-2 rounded-lg shadow hover:bg-green-800 transition-all text-sm font-semibold"
+//                 onClick={handleAddSlots}
+//               >
+//                 View Slots
+//               </button>
 //             </div>
 //           </div>
 
-//           {/* FILTERS PANEL */}
+//           {/* FILTERS PANEL - full width grid */}
 //           {filtersOpen && (
-//             <div className="mb-6 p-2 bg-[#f5fafd] rounded-xl border border-[#bfe7ef] shadow flex flex-wrap items-end gap-2 animate-fade-in-up">
-//               {/* 1. Date / Time */}
-//               <div className="flex flex-col min-w-[110px]">
-//                 <label className="font-medium text-[#005e6a] text-xs mb-1">Date/Time</label>
-//                 <input
-//                   type="text"
-//                   name="dateTime"
-//                   value={filters.dateTime}
-//                   onChange={handleFilterChange}
-//                   className="px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
-//                   placeholder="Date/Time"
-//                 />
-//               </div>
-//               {/* 2. Email */}
-//               <div className="flex flex-col min-w-[110px]">
-//                 <label className="font-medium text-[#005e6a] text-xs mb-1">Email</label>
-//                 <input
-//                   type="text"
-//                   name="email"
-//                   value={filters.email}
-//                   onChange={handleFilterChange}
-//                   className="px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
-//                   placeholder="Email"
-//                 />
-//               </div>
-//               {/* 3. Name (first/last) */}
-//               <div className="flex flex-col min-w-[130px]">
-//                 <label className="font-medium text-[#005e6a] text-xs mb-1">First/Last Name</label>
-//                 <input
-//                   type="text"
-//                   name="name"
-//                   value={filters.name}
-//                   onChange={handleFilterChange}
-//                   className="px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
-//                   placeholder="First or Last Name"
-//                 />
-//               </div>
-//               {/* 4. Company */}
-//               <div className="flex flex-col min-w-[110px]">
-//                 <label className="font-medium text-[#005e6a] text-xs mb-1">Company</label>
-//                 <input
-//                   type="text"
-//                   name="company"
-//                   value={filters.company}
-//                   onChange={handleFilterChange}
-//                   className="px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
-//                   placeholder="Company Name"
-//                 />
-//               </div>
-//               {/* 5. Status */}
-//               <div className="flex flex-col min-w-[100px]">
-//                 <label className="font-medium text-[#005e6a] text-xs mb-1">Status</label>
-//                 <select
-//                   name="status"
-//                   value={filters.status}
-//                   onChange={handleFilterChange}
-//                   className="px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
-//                 >
-//                   <option value="">All</option>
-//                   <option value="pending">Pending</option>
-//                   <option value="accepted">Accepted</option>
-//                   <option value="rejected">Rejected</option>
-//                 </select>
-//               </div>
-//               {/* 6. Phone */}
-//               <div className="flex flex-col min-w-[110px]">
-//                 <label className="font-medium text-[#005e6a] text-xs mb-1">Phone Number</label>
-//                 <input
-//                   type="text"
-//                   name="phone"
-//                   value={filters.phone}
-//                   onChange={handleFilterChange}
-//                   className="px-2 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
-//                   placeholder="Phone Number"
-//                 />
-//               </div>
-//               {/* Apply & Reset Buttons */}
-//               <div className="flex gap-1 ml-2 mt-4 mb-1">
-//                 <button
-//                   className="bg-[#005e6a] text-white px-3 py-1 rounded hover:bg-[#077e8d] transition-all text-sm font-semibold"
-//                   onClick={applyFilters}
-//                 >
-//                   Apply Filters
-//                 </button>
-//                 <button
-//                   className="bg-gray-200 text-[#005e6a] px-3 py-1 rounded hover:bg-gray-300 transition-all text-sm font-semibold"
-//                   onClick={resetFilters}
-//                   type="button"
-//                 >
-//                   Reset
-//                 </button>
-//               </div>
+//             <div className="mb-6 p-4 bg-[#f5fafd] rounded-xl border border-[#bfe7ef] shadow animate-fade-in-up">
+//               <form
+//                 className="w-full grid grid-cols-1 md:grid-cols-7 gap-3 items-end"
+//                 onSubmit={e => { e.preventDefault(); applyFilters(); }}
+//               >
+//                 {/* 1. Date / Time */}
+//                 <div className="flex flex-col w-full">
+//                   <label className="font-medium text-[#005e6a] text-xs mb-1">Date/Time</label>
+//                   <input
+//                     type="text"
+//                     name="dateTime"
+//                     value={filters.dateTime}
+//                     onChange={handleFilterChange}
+//                     className="px-3 py-2 w-full border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
+//                     placeholder="Date/Time"
+//                   />
+//                 </div>
+//                 {/* 2. Email */}
+//                 <div className="flex flex-col w-full">
+//                   <label className="font-medium text-[#005e6a] text-xs mb-1">Email</label>
+//                   <input
+//                     type="text"
+//                     name="email"
+//                     value={filters.email}
+//                     onChange={handleFilterChange}
+//                     className="px-3 py-2 w-full border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
+//                     placeholder="Email"
+//                   />
+//                 </div>
+//                 {/* 3. Name (first/last) */}
+//                 <div className="flex flex-col w-full">
+//                   <label className="font-medium text-[#005e6a] text-xs mb-1">First/Last Name</label>
+//                   <input
+//                     type="text"
+//                     name="name"
+//                     value={filters.name}
+//                     onChange={handleFilterChange}
+//                     className="px-3 py-2 w-full border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
+//                     placeholder="First or Last Name"
+//                   />
+//                 </div>
+//                 {/* 4. Company */}
+//                 <div className="flex flex-col w-full">
+//                   <label className="font-medium text-[#005e6a] text-xs mb-1">Company</label>
+//                   <input
+//                     type="text"
+//                     name="company"
+//                     value={filters.company}
+//                     onChange={handleFilterChange}
+//                     className="px-3 py-2 w-full border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
+//                     placeholder="Company Name"
+//                   />
+//                 </div>
+//                 {/* 5. Status */}
+//                 <div className="flex flex-col w-full">
+//                   <label className="font-medium text-[#005e6a] text-xs mb-1">Status</label>
+//                   <select
+//                     name="status"
+//                     value={filters.status}
+//                     onChange={handleFilterChange}
+//                     className="px-3 py-2 w-full border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
+//                   >
+//                     <option value="">All</option>
+//                     <option value="pending">Pending</option>
+//                     <option value="accepted">Accepted</option>
+//                     <option value="rejected">Rejected</option>
+//                   </select>
+//                 </div>
+//                 {/* 6. Phone */}
+//                 <div className="flex flex-col w-full">
+//                   <label className="font-medium text-[#005e6a] text-xs mb-1">Phone Number</label>
+//                   <input
+//                     type="text"
+//                     name="phone"
+//                     value={filters.phone}
+//                     onChange={handleFilterChange}
+//                     className="px-3 py-2 w-full border rounded focus:outline-none focus:ring-2 focus:ring-[#005e6a] text-sm"
+//                     placeholder="Phone Number"
+//                   />
+//                 </div>
+//                 {/* Apply & Reset Buttons */}
+//                 <div className="flex gap-2 w-full mt-4 md:mt-0">
+//                   <button
+//                     className="bg-[#005e6a] text-white px-3 py-2 w-full rounded hover:bg-[#077e8d] transition-all text-sm font-semibold"
+//                     type="submit"
+//                   >
+//                     Apply Filters
+//                   </button>
+//                   <button
+//                     className="bg-gray-200 text-[#005e6a] px-3 py-2 w-full rounded hover:bg-gray-300 transition-all text-sm font-semibold"
+//                     onClick={resetFilters}
+//                     type="button"
+//                   >
+//                     Reset
+//                   </button>
+//                 </div>
+//               </form>
 //             </div>
 //           )}
 
@@ -457,6 +456,14 @@
 //     </main>
 //   );
 // }
+
+
+
+
+
+
+
+
 
 
 
@@ -663,11 +670,11 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* FILTERS PANEL - full width grid */}
+          {/* FILTERS PANEL - grid, buttons at the end */}
           {filtersOpen && (
             <div className="mb-6 p-4 bg-[#f5fafd] rounded-xl border border-[#bfe7ef] shadow animate-fade-in-up">
               <form
-                className="w-full grid grid-cols-1 md:grid-cols-7 gap-3 items-end"
+                className="w-full grid grid-cols-1 md:grid-cols-8 gap-3 items-end"
                 onSubmit={e => { e.preventDefault(); applyFilters(); }}
               >
                 {/* 1. Date / Time */}
@@ -745,8 +752,8 @@ export default function AdminDashboard() {
                     placeholder="Phone Number"
                   />
                 </div>
-                {/* Apply & Reset Buttons */}
-                <div className="flex gap-2 w-full mt-4 md:mt-0">
+                {/* 7. Buttons (all buttons at the end in one column, stacked) */}
+                <div className="flex flex-col w-full gap-2 md:justify-end md:items-end">
                   <button
                     className="bg-[#005e6a] text-white px-3 py-2 w-full rounded hover:bg-[#077e8d] transition-all text-sm font-semibold"
                     type="submit"
