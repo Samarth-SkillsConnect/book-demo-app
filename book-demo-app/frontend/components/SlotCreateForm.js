@@ -26,7 +26,7 @@ function generateSlotsForWeek(slotConfig, weekStartDate) {
 
 
     const minStart = "09:00";
-    const maxEnd = "18:00";
+    const maxEnd = "18:30";
     const startTime = config.startTime < minStart ? minStart : config.startTime;
     const endTime = config.endTime > maxEnd ? maxEnd : config.endTime;
 
@@ -52,7 +52,7 @@ export default function SlotCreateForm() {
       day,
       isOff: false,
       startTime: "09:00",
-      endTime: "18:00",
+      endTime: "18:30",
       interval: 30,
     }))
   );
@@ -193,7 +193,7 @@ export default function SlotCreateForm() {
                   <input
                     type="time"
                     min="09:00"
-                    max="18:00"
+                    max="18:30"
                     value={dayConfig.startTime}
                     onChange={e =>
                       handleDayChange(idx, "startTime", e.target.value)
@@ -205,7 +205,7 @@ export default function SlotCreateForm() {
                   <input
                     type="time"
                     min="09:00"
-                    max="18:00"
+                    max="18:30"
                     value={dayConfig.endTime}
                     onChange={e =>
                       handleDayChange(idx, "endTime", e.target.value)

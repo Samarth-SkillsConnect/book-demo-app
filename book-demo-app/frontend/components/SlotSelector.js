@@ -3,7 +3,7 @@ import { formatTimeRange } from "./TimeHelpers";
 
 function isInDesiredRange(slot) {
  
-  return slot.start_time >= "09:00" && slot.end_time <= "18:00";
+  return slot.start_time >= "09:00" && slot.end_time <= "18:30";
 }
 
 export default function SlotSelector({ slots, onSlotSelect, selectedSlot, loading }) {

@@ -87,94 +87,94 @@ export default function AddSlotsPage() {
     setShowDeleteDayConfirm(true);
   }
 
-async function fetchInactiveDays() {
-  try {
-    const res = await fetch('http://localhost:5000/api/admin/slots/days-status');
-    const data = await res.json();
-    setInactiveDays(data.inactiveDays || []);
-  } catch (err) {
-    setInactiveDays([]);
-  }
-}
-useEffect(() => {
-  fetchInactiveDays();
-}, []);
-
-
-// async function fetchDaySlotsConfig() {
-//   const res = await fetch('http://localhost:5000/api/admin/slots/recurring');
-//   const data = await res.json();
-//   setDaySlots(data);
-// }
-
-async function fetchDaySlotsConfig() {
-  const res = await fetch('http://localhost:5000/api/admin/slots/recurring');
-  const data = await res.json();
-  setDaySlots(
-    weekDays.map((wd) => {
-      // Try to find config for this day
-      const config = data.find((c) => c.day === wd.key);
-      if (config) {
-        return {
-          day: wd.key,
-          name: wd.name,
-          start: config.start || defaultStart,
-          end: config.end || defaultEnd,
-          interval: config.interval || defaultInterval,
-          status: config.status || "active",
-        };
-      } else {
-        // fallback for days not present in backend
-        return {
-          day: wd.key,
-          name: wd.name,
-          start: defaultStart,
-          end: defaultEnd,
-          interval: defaultInterval,
-          status: "inactive",
-        };
-      }
-    })
-  );
-}
-
-
-useEffect(() => {
-  fetchDaySlotsConfig();
-}, []);
-
-async function confirmDeleteDay() {
-  if (pendingDeleteDayIdx !== null) {
-    const dayToDelete = daySlots[pendingDeleteDayIdx].day;
-
+  async function fetchInactiveDays() {
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/admin/slots/day/${dayToDelete}`,
-        { method: "DELETE" }
-      );
+      const res = await fetch('http://localhost:5000/api/admin/slots/days-status');
       const data = await res.json();
-      if (res.ok) {
-        setSuccessSeleteDayMsg(
-          `All slots for ${daySlots[pendingDeleteDayIdx].name} have been deleted successfully!`
-        );
-        // Re-fetch inactive days from backend so UI stays in sync across reloads
-        await fetchInactiveDays();
-      } else {
-        setDeleteDayMsg(data.message || "Failed to delete slots for this day because a booking already exists.");
-      }
+      setInactiveDays(data.inactiveDays || []);
     } catch (err) {
-      setDeleteDayMsg("Error deleting slots for that day. Because a booking exists.");
+      setInactiveDays([]);
     }
+  }
+  useEffect(() => {
+    fetchInactiveDays();
+  }, []);
 
-    setCreatedSlots((prev) =>
-      prev.filter((slot) => !slot.days.includes(dayToDelete))
+
+  // async function fetchDaySlotsConfig() {
+  //   const res = await fetch('http://localhost:5000/api/admin/slots/recurring');
+  //   const data = await res.json();
+  //   setDaySlots(data);
+  // }
+
+  async function fetchDaySlotsConfig() {
+    const res = await fetch('http://localhost:5000/api/admin/slots/recurring');
+    const data = await res.json();
+    setDaySlots(
+      weekDays.map((wd) => {
+        // Try to find config for this day
+        const config = data.find((c) => c.day === wd.key);
+        if (config) {
+          return {
+            day: wd.key,
+            name: wd.name,
+            start: config.start || defaultStart,
+            end: config.end || defaultEnd,
+            interval: config.interval || defaultInterval,
+            status: config.status || "active",
+          };
+        } else {
+          // fallback for days not present in backend
+          return {
+            day: wd.key,
+            name: wd.name,
+            start: defaultStart,
+            end: defaultEnd,
+            interval: defaultInterval,
+            status: "inactive",
+          };
+        }
+      })
     );
   }
-  setShowDeleteDayConfirm(false);
-  setPendingDeleteDayIdx(null);
-  setTimeout(() => setDeleteDayMsg(""), 2500);
-  setTimeout(() => setSuccessSeleteDayMsg(""), 2500);
-}
+
+
+  useEffect(() => {
+    fetchDaySlotsConfig();
+  }, []);
+
+  async function confirmDeleteDay() {
+    if (pendingDeleteDayIdx !== null) {
+      const dayToDelete = daySlots[pendingDeleteDayIdx].day;
+
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/admin/slots/day/${dayToDelete}`,
+          { method: "DELETE" }
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setSuccessSeleteDayMsg(
+            `All slots for ${daySlots[pendingDeleteDayIdx].name} have been deleted successfully!`
+          );
+          // Re-fetch inactive days from backend so UI stays in sync across reloads
+          await fetchInactiveDays();
+        } else {
+          setDeleteDayMsg(data.message || "Failed to delete slots for this day because a booking already exists.");
+        }
+      } catch (err) {
+        setDeleteDayMsg("Error deleting slots for that day. Because a booking exists.");
+      }
+
+      setCreatedSlots((prev) =>
+        prev.filter((slot) => !slot.days.includes(dayToDelete))
+      );
+    }
+    setShowDeleteDayConfirm(false);
+    setPendingDeleteDayIdx(null);
+    setTimeout(() => setDeleteDayMsg(""), 2500);
+    setTimeout(() => setSuccessSeleteDayMsg(""), 2500);
+  }
 
   function cancelDeleteDay() {
     setShowDeleteDayConfirm(false);
@@ -318,70 +318,70 @@ async function confirmDeleteDay() {
     }
   }
 
-async function saveRecurringSlotsToBackend() {
-  setShowBulkSaveConfirm(false);
-  setSavingBulk(true);
-  setBulkSaveMsg("");
-  // updateDaySlotsFromPopup();
-await fetchDaySlotsConfig();
-await fetchInactiveDays();
+  async function saveRecurringSlotsToBackend() {
+    setShowBulkSaveConfirm(false);
+    setSavingBulk(true);
+    setBulkSaveMsg("");
+    // updateDaySlotsFromPopup();
 
-  let daysConfig;
-  if (editIdx !== null) {
-    // Editing a single day
-    const editedDay = daySlots[editIdx].day;
-    const slot = createdSlots.length > 0 ? createdSlots[0] : slotDraft;
-    daysConfig = [{
-      day: editedDay,
-      status: slot.status,
-      start: slot.start,
-      end: slot.end,
-      interval: slot.interval,
-    }];
-  } else {
-    // Bulk: Only what the user just added!
-    daysConfig = createdSlots.flatMap(slot =>
-      slot.days.map(day => ({
-        day,
+    let daysConfig;
+    if (editIdx !== null) {
+      // Editing a single day
+      const editedDay = daySlots[editIdx].day;
+      const slot = createdSlots.length > 0 ? createdSlots[0] : slotDraft;
+      daysConfig = [{
+        day: editedDay,
         status: slot.status,
         start: slot.start,
         end: slot.end,
-        interval: slot.interval
-      }))
-    );
-  }
-
-  console.log({ daysConfig }); // This should now only show the days actually configured by the user
-
-  try {
-    const res = await fetch("http://localhost:5000/api/admin/slots/bulk-generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ daysConfig }),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      setBulkSaveMsg(data.message || "Failed to save recurring slots.");
-      setSavingBulk(false);
-      return;
+        interval: slot.interval,
+      }];
+    } else {
+      // Bulk: Only what the user just added!
+      daysConfig = createdSlots.flatMap(slot =>
+        slot.days.map(day => ({
+          day,
+          status: slot.status,
+          start: slot.start,
+          end: slot.end,
+          interval: slot.interval
+        }))
+      );
     }
-    setBulkSaveMsg(data.message || "Recurring slots saved!");
-    await fetchInactiveDays(); // Refresh inactive days if needed
-    setShowSetSlots(false);
-    setEditIdx(null);
-    setCreatedSlots([]);
-    setSlotDraft({
-      days: [],
-      start: defaultStart,
-      end: defaultEnd,
-      interval: 30,
-      status: "active",
-    });
-  } catch (err) {
-    setBulkSaveMsg(err.message || "Failed to save recurring slots.");
+
+    console.log({ daysConfig }); // This should now only show the days actually configured by the user
+
+    try {
+      const res = await fetch("http://localhost:5000/api/admin/slots/bulk-generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ daysConfig }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setBulkSaveMsg(data.message || "Failed to save recurring slots.");
+        setSavingBulk(false);
+        return;
+      }
+      setBulkSaveMsg(data.message || "Recurring slots saved!");
+  
+      await fetchDaySlotsConfig();
+      await fetchInactiveDays(); // Refresh inactive days if needed
+      setShowSetSlots(false);
+      setEditIdx(null);
+      setCreatedSlots([]);
+      setSlotDraft({
+        days: [],
+        start: defaultStart,
+        end: defaultEnd,
+        interval: 30,
+        status: "active",
+      });
+    } catch (err) {
+      setBulkSaveMsg(err.message || "Failed to save recurring slots.");
+    }
+    setSavingBulk(false);
   }
-  setSavingBulk(false);
-}
 
   async function saveCustomSlotsToBackend() {
     setSavingCustom(true);
@@ -761,10 +761,10 @@ await fetchInactiveDays();
                     <td className="p-3 border border-[#e0f2f7] text-center">
                       <span
                         className={`inline-block px-3 py-1 rounded font-bold text-xs w-24 text-center ${isInactive || slot.status === "inactive"
-                            ? "bg-red-100 text-red-600"
-                            : slot.status === "active"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-gray-200 text-gray-700"
+                          ? "bg-red-100 text-red-600"
+                          : slot.status === "active"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-200 text-gray-700"
                           }`}
                       >
                         {isInactive || slot.status === "inactive"

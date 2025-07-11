@@ -156,6 +156,60 @@ exports.getAllBookings = async (req, res) => {
  *   ]
  * }
  */
+
+
+// exports.bulkCreateSlots = async (req, res) => {
+//   try {
+//     const { daysConfig } = req.body;
+//     if (!daysConfig || !Array.isArray(daysConfig)) {
+//       return res.status(400).json({ message: 'Missing daysConfig.' });
+//     }
+
+//     const today = new Date();
+//     const endDate = new Date(today);
+//     endDate.setMonth(today.getMonth() + 6);
+
+//     let createdCount = 0, skippedCount = 0;
+
+//     for (const config of daysConfig) {
+//       if (config.status === "weekly-off") continue;
+//       if (config.status !== "active") continue;
+//       const weekdayNum = weekdayMap[config.day];
+//       if (!weekdayNum) continue;
+//       for (let d = new Date(today); d <= endDate; d.setDate(d.getDate() + 1)) {
+//         const weekday = d.getDay() === 0 ? 7 : d.getDay();
+//         if (weekday === weekdayNum) {
+//           const dateStr = d.toISOString().slice(0, 10);
+//           const slots = generateSlotsForDate(dateStr, config.start, config.end, Number(config.interval));
+//           for (const slot of slots) {
+//             // Avoid exact duplicates (date, start_time, end_time)
+//             const [rows] = await pool.query(
+//               `SELECT id FROM demo_slots WHERE date = ? AND start_time = ? AND end_time = ?`,
+//               [slot.date, slot.start_time, slot.end_time]
+//             );
+//             if (rows.length === 0) {
+//               await pool.query(
+//                 `INSERT INTO demo_slots (date, start_time, end_time, is_booked, day_of_week, day_status)
+//                  VALUES (?, ?, ?, 0, ?, ?)`,
+//                 [slot.date, slot.start_time, slot.end_time, config.day, config.status]
+//               );
+//               createdCount++;
+//             } else {
+//               skippedCount++;
+//             }
+//           }
+//         }
+//       }
+//     }
+//     res.json({
+//       message: `Created ${createdCount} slots. Skipped ${skippedCount} duplicates.`,
+//     });
+//   } catch (err) {
+//     console.error('Error in bulkCreateSlots:', err);
+//     res.status(500).json({ message: 'Error generating slots.' });
+//   }
+// };
+
 exports.bulkCreateSlots = async (req, res) => {
   try {
     const { daysConfig } = req.body;
@@ -167,13 +221,34 @@ exports.bulkCreateSlots = async (req, res) => {
     const endDate = new Date(today);
     endDate.setMonth(today.getMonth() + 6);
 
-    let createdCount = 0, skippedCount = 0;
+    let createdCount = 0, skippedCount = 0, deletedCount = 0;
 
     for (const config of daysConfig) {
-      if (config.status === "weekly-off") continue;
-      if (config.status !== "active") continue;
       const weekdayNum = weekdayMap[config.day];
       if (!weekdayNum) continue;
+
+      // --- DELETE ALL FUTURE SLOTS for this day_of_week with no bookings ---
+      // Find all future slots for this day_of_week
+      const [oldSlots] = await pool.query(
+        `SELECT id FROM demo_slots WHERE day_of_week = ? AND date >= CURDATE()`,
+        [config.day]
+      );
+      for (const slot of oldSlots) {
+        const [bookings] = await pool.query(
+          `SELECT id FROM bookings WHERE slot_id = ?`,
+          [slot.id]
+        );
+        if (bookings.length === 0) {
+          await pool.query(`DELETE FROM demo_slots WHERE id = ?`, [slot.id]);
+          deletedCount++;
+        }
+      }
+
+      // --- Handle "weekly-off": just delete, do not create new slots ---
+      if (config.status === "weekly-off") continue;
+      if (config.status !== "active") continue;
+
+      // --- GENERATE AND INSERT NEW SLOTS ---
       for (let d = new Date(today); d <= endDate; d.setDate(d.getDate() + 1)) {
         const weekday = d.getDay() === 0 ? 7 : d.getDay();
         if (weekday === weekdayNum) {
@@ -200,7 +275,7 @@ exports.bulkCreateSlots = async (req, res) => {
       }
     }
     res.json({
-      message: `Created ${createdCount} slots. Skipped ${skippedCount} duplicates.`,
+      message: `Deleted ${deletedCount} old slots. Created ${createdCount} new slots. Skipped ${skippedCount} duplicates.`,
     });
   } catch (err) {
     console.error('Error in bulkCreateSlots:', err);
