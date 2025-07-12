@@ -1,4 +1,7 @@
 
+// import { formatTimeRange } from "./TimeHelpers";
+// import PhoneInput from "react-phone-input-2";
+// import "react-phone-input-2/lib/style.css";
 // import { useState, useRef } from "react";
 // import {
 //   validateEmail,
@@ -8,9 +11,6 @@
 //   validateCompany,
 //   validateDescription
 // } from "./ValidationHelpers";
-// import { formatTimeRange } from "./TimeHelpers";
-// import PhoneInput from "react-phone-input-2";
-// import "react-phone-input-2/lib/style.css";
 
 // function formatDateDMY(dateStr) {
 //   if (!dateStr) return "";
@@ -86,7 +86,7 @@
 //           if (guestArr.length > 30)
 //             return "Max 30 guests allowed";
 //           if (allValues && allValues.email &&
-//               guestArr.some(g => g.toLowerCase() === allValues.email.toLowerCase())) {
+//             guestArr.some(g => g.toLowerCase() === allValues.email.toLowerCase())) {
 //             return "You cannot add yourself as a guest";
 //           }
 //           if (!validateGuestEmails(guestArr, allValues?.email))
@@ -107,7 +107,6 @@
 //   const [email, setEmail] = useState("");
 //   const [description, setDescription] = useState("");
 
-//   // Guests: use array for tags, guestInput for controlled input, and touched for error display
 //   const [guests, setGuests] = useState([]);
 //   const [guestInput, setGuestInput] = useState("");
 //   const [guestInputTouched, setGuestInputTouched] = useState(false);
@@ -151,7 +150,6 @@
 //     }));
 //   };
 
-//   // Helper to add multiple emails from a string (comma or space separated)
 //   const addGuestsFromString = (str) => {
 //     let emails = str
 //       .split(/[\s,]+/)
@@ -187,7 +185,6 @@
 //     }));
 //   };
 
-//   // Modified input keydown for space/comma/enter
 //   const handleGuestInputKeyDown = (e) => {
 //     if (e.key === " " || e.key === "," || e.key === "Enter") {
 //       e.preventDefault();
@@ -196,7 +193,6 @@
 //     }
 //   };
 
-//   // Handle paste event
 //   const handleGuestInputPaste = (e) => {
 //     const paste = (e.clipboardData || window.clipboardData).getData('text');
 //     if (paste.includes(",") || paste.includes(" ") || paste.includes("\n")) {
@@ -205,7 +201,6 @@
 //     }
 //   };
 
-//   // Remove tag handler
 //   const handleRemoveGuest = (idx) => {
 //     const newGuests = guests.filter((_, i) => i !== idx);
 //     setGuests(newGuests);
@@ -217,10 +212,8 @@
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
-//     const guestArr = guests
-//       .split(",")
-//       .map((g) => g.trim())
-//       .filter((g) => g.length);
+
+//     const guestArr = guests.map((g) => g.trim()).filter((g) => g.length);
 
 //     const fieldErrors = {};
 //     if (!firstName) fieldErrors.firstName = "First name is required";
@@ -256,19 +249,19 @@
 
 //   return (
 //     <div
-//       className="fixed inset-0 z-50 flex items-center justify-center px-2 py-6 animate-fade-in"
+//       className="z-50 flex items-center justify-center px-2 py-6 animate-fade-in"
 //       style={{
 //         background: "linear-gradient(135deg, #005e6a33 0%, #3ecbdb18 100%)"
 //       }}
 //     >
 //       <div
-//         className="absolute inset-0 pointer-events-none z-0 rounded-2xl border-4 border-transparent"
+//         className="absolute pointer-events-none z-0 rounded-2xl border-4 border-transparent"
 //         style={{
 //           boxShadow: "0 0 40px 3px #005e6a33, 0 0 0 8px #3ecbdb22 inset"
 //         }}
 //       />
 //       <div
-//         className="relative rounded-2xl shadow-2xl px-3 py-3 sm:px-8 sm:py-6 w-full max-w-lg max-h-[92vh] overflow-y-auto animate-fade-in-up transition-all duration-700 border-2"
+//         className="relative rounded-2xl shadow-2xl px-3 py-3 sm:px-8 sm:py-6 w-full max-w-3xl  animate-fade-in-up transition-all duration-700"
 //         style={{
 //           background: themeCard,
 //           borderColor: themePrimary,
@@ -284,7 +277,7 @@
 //           &times;
 //         </button>
 //         <h2
-//           className="text-2xl sm:text-3xl font-extrabold mb-2 text-center tracking-tight drop-shadow animate-fade-in"
+//           className="text-2xl sm:text-3xl font-bold mb-2 text-center tracking-tight drop-shadow animate-fade-in"
 //           style={{ color: themePrimary }}
 //         >
 //           Book Your Demo
@@ -294,19 +287,19 @@
 //           &nbsp;|&nbsp;
 //           <span className="font-semibold" style={{ color: themePrimary }}>Time:</span> {formatTimeRange(slot.start_time, slot.end_time)}
 //           <div style={{ fontSize: "0.85em", color: "#888", marginTop: 2 }}>
-//             {/* [Debug: Raw slot.date = <b>{slot?.date}</b>] */}
 //           </div>
 //         </div>
-//         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 animate-fade-in-up delay-150">
-//           <div className="flex flex-col sm:flex-row gap-2">
-//             <div className="flex-1">
+//         <div className=" overflow-auto h-[500px] lg:h-[90%] ">
+//         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 animate-fade-in-up delay-150 ">
+//           <div className="grid sm:grid-cols-2 gap-4 max-w-[42rem] w-full mx-auto">
+           
+//             <div>
 //               <label className="block mb-1 font-medium" style={{ color: themePrimary }}>First Name *</label>
 //               <input
-//                 className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${
-//                   errors.firstName
+//                 className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${errors.firstName
 //                     ? "border-red-400 focus:ring-red-300"
 //                     : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
-//                 }`}
+//                   }`}
 //                 value={firstName}
 //                 onChange={e => handleChange("firstName", e.target.value)}
 //                 autoComplete="given-name"
@@ -314,14 +307,14 @@
 //               />
 //               {errors.firstName && <div className="text-red-600 text-xs mt-1">{errors.firstName}</div>}
 //             </div>
-//             <div className="flex-1">
+
+//             <div>
 //               <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Last Name *</label>
 //               <input
-//                 className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${
-//                   errors.lastName
+//                 className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${errors.lastName
 //                     ? "border-red-400 focus:ring-red-300"
 //                     : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
-//                 }`}
+//                   }`}
 //                 value={lastName}
 //                 onChange={e => handleChange("lastName", e.target.value)}
 //                 autoComplete="family-name"
@@ -329,70 +322,59 @@
 //               />
 //               {errors.lastName && <div className="text-red-600 text-xs mt-1">{errors.lastName}</div>}
 //             </div>
-//           </div>
-//           <div>
-//             <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Company Name</label>
-//             <input
-//               className="w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
-//               value={company}
-//               onChange={e => handleChange("company", e.target.value)}
-//               autoComplete="organization"
-//               style={{ color: themePrimary }}
-//             />
-//             {errors.company && <div className="text-red-600 text-xs mt-1">{errors.company}</div>}
-//           </div>
-//           <div>
-//             <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Mobile Number (with country code) *</label>
-//             <PhoneInput
-//               country={'in'}
-//               value={mobile}
-//               onChange={value => {
-//                 handleChange("mobile", value ? ("+" + value) : "");
-//               }}
-//               inputClass={`w-full ${errors.mobile ? 'border-red-400' : 'border-[color:var(--theme-primary)]'}`}
-//               inputProps={{
-//                 name: 'mobile',
-//                 required: true,
-//                 autoFocus: false
-//               }}
-//               disableDropdown={false}
-//               enableSearch
-//               countryCodeEditable={true}
-//             />
-//             {errors.mobile && <div className="text-red-600 text-xs mt-1">{errors.mobile}</div>}
-//           </div>
-//           <div>
-//             <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Email *</label>
-//             <input
-//               className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${
-//                 errors.email
-//                   ? "border-red-400 focus:ring-red-300"
-//                   : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
-//               }`}
-//               value={email}
-//               onChange={e => handleChange("email", e.target.value)}
-//               autoComplete="email"
-//               style={{ color: themePrimary }}
-//             />
-//             {errors.email && <div className="text-red-600 text-xs mt-1">{errors.email}</div>}
-//           </div>
-//           <div>
-//             <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Description *</label>
-//             <textarea
-//               className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${
-//                 errors.description
-//                   ? "border-red-400 focus:ring-red-300"
-//                   : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
-//               }`}
-//               rows={3}
-//               value={description}
-//               onChange={e => handleChange("description", e.target.value)}
-//               placeholder="What do you want to know about us?"
-//               style={{ color: themePrimary }}
-//             />
-//             {errors.description && <div className="text-red-600 text-xs mt-1">{errors.description}</div>}
-//           </div>
-//           <div>
+
+//             {/* Company Name */}
+//             <div className="sm:col-span-1">
+//               <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Company Name</label>
+//               <input
+//                 className="w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
+//                 value={company}
+//                 onChange={e => handleChange("company", e.target.value)}
+//                 autoComplete="organization"
+//                 style={{ color: themePrimary }}
+//               />
+//               {errors.company && <div className="text-red-600 text-xs mt-1">{errors.company}</div>}
+//             </div>
+
+//             {/* Mobile Number */}
+//             <div className="sm:col-span-1">
+//               <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Mobile Number (with country code) *</label>
+//               <PhoneInput
+//                 country={'in'}
+//                 value={mobile}
+//                 onChange={value => {
+//                   handleChange("mobile", value ? ("+" + value) : "");
+//                 }}
+//                 inputClass={`w-full border-5 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${errors.mobile ? 'border-red-400 focus:ring-red-300' : 'border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]'
+//                   }`}
+//                 inputProps={{
+//                   name: 'mobile',
+//                   required: true,
+//                   autoFocus: false
+//                 }}
+//                 disableDropdown={false}
+//                 enableSearch
+//                 countryCodeEditable={true}
+//               />
+//               {errors.mobile && <div className="text-red-600 text-xs mt-1">{errors.mobile}</div>}
+//             </div>
+
+//             {/* Email */}
+//             <div className="sm:col-span-1">
+//               <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Email *</label>
+//               <input
+//                 className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${errors.email
+//                     ? "border-red-400 focus:ring-red-300"
+//                     : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
+//                   }`}
+//                 value={email}
+//                 onChange={e => handleChange("email", e.target.value)}
+//                 autoComplete="email"
+//                 style={{ color: themePrimary }}
+//               />
+//               {errors.email && <div className="text-red-600 text-xs mt-1">{errors.email}</div>}
+//             </div>
+//              <div className="sm:col-span-1">
 //             <label className="block mb-1 font-medium" style={{ color: themePrimary }}>
 //               Guests <span className="text-xs text-gray-400">(type or paste emails, press space/comma/enter, max 30)</span>
 //             </label>
@@ -433,6 +415,24 @@
 //               <div className="text-red-600 text-xs mt-1">{errors.guests}</div>
 //             )}
 //           </div>
+//           <div className="sm:col-span-2">
+//             <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Description *</label>
+//             <textarea
+//               className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${errors.description
+//                   ? "border-red-400 focus:ring-red-300"
+//                   : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
+//                 }`}
+//               rows={3}
+//               value={description}
+//               onChange={e => handleChange("description", e.target.value)}
+//               placeholder="What do you want to know about us?"
+//               style={{ color: themePrimary }}
+//             />
+//             {errors.description && <div className="text-red-600 text-xs mt-1">{errors.description}</div>}
+//           </div>
+         
+//           </div>
+
 //           <button
 //             className="w-full py-2.5 text-lg text-white rounded-lg font-bold shadow transition-all duration-150 disabled:opacity-60 animate-fade-in delay-200"
 //             style={{
@@ -452,12 +452,17 @@
 //             ) : "Book Demo"}
 //           </button>
 //         </form>
+//         </div>
 //       </div>
 //     </div>
 //   );
 // }
 
 
+
+import { formatTimeRange } from "./TimeHelpers";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import { useState, useRef } from "react";
 import {
   validateEmail,
@@ -467,9 +472,6 @@ import {
   validateCompany,
   validateDescription
 } from "./ValidationHelpers";
-import { formatTimeRange } from "./TimeHelpers";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
 
 function formatDateDMY(dateStr) {
   if (!dateStr) return "";
@@ -545,7 +547,7 @@ function validateField(field, value, allValues) {
           if (guestArr.length > 30)
             return "Max 30 guests allowed";
           if (allValues && allValues.email &&
-              guestArr.some(g => g.toLowerCase() === allValues.email.toLowerCase())) {
+            guestArr.some(g => g.toLowerCase() === allValues.email.toLowerCase())) {
             return "You cannot add yourself as a guest";
           }
           if (!validateGuestEmails(guestArr, allValues?.email))
@@ -566,7 +568,6 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
 
-  // Guests: use array for tags, guestInput for controlled input, and touched for error display
   const [guests, setGuests] = useState([]);
   const [guestInput, setGuestInput] = useState("");
   const [guestInputTouched, setGuestInputTouched] = useState(false);
@@ -610,7 +611,6 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
     }));
   };
 
-  // Helper to add multiple emails from a string (comma or space separated)
   const addGuestsFromString = (str) => {
     let emails = str
       .split(/[\s,]+/)
@@ -646,7 +646,6 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
     }));
   };
 
-  // Modified input keydown for space/comma/enter
   const handleGuestInputKeyDown = (e) => {
     if (e.key === " " || e.key === "," || e.key === "Enter") {
       e.preventDefault();
@@ -655,7 +654,6 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
     }
   };
 
-  // Handle paste event
   const handleGuestInputPaste = (e) => {
     const paste = (e.clipboardData || window.clipboardData).getData('text');
     if (paste.includes(",") || paste.includes(" ") || paste.includes("\n")) {
@@ -664,7 +662,6 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
     }
   };
 
-  // Remove tag handler
   const handleRemoveGuest = (idx) => {
     const newGuests = guests.filter((_, i) => i !== idx);
     setGuests(newGuests);
@@ -677,7 +674,6 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // No need to split guests! It's already an array.
     const guestArr = guests.map((g) => g.trim()).filter((g) => g.length);
 
     const fieldErrors = {};
@@ -701,69 +697,50 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
       mobile_number: mobile,
       email,
       description,
-      guests: guests.join(","), // <--- Send as comma separated string to backend
+      guests: guests.join(","),
     });
     setSubmitting(false);
   };
 
   const themePrimary = "var(--theme-primary)";
   const themePrimaryLight = "var(--theme-primary-light)";
-  const themeBgLight = "var(--theme-bg-light)";
   const themeCard = "var(--theme-card)";
   const prettyDate = formatDateDMY(slot?.date);
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center px-2 py-6 animate-fade-in"
-      style={{
-        background: "linear-gradient(135deg, #005e6a33 0%, #3ecbdb18 100%)"
-      }}
+      className="relative  px-3 py-3 sm:px-8 sm:py-6 w-full max-w-3xl animate-fade-in-up transition-all duration-700  mx-auto"
+
     >
-      <div
-        className="absolute inset-0 pointer-events-none z-0 rounded-2xl border-4 border-transparent"
-        style={{
-          boxShadow: "0 0 40px 3px #005e6a33, 0 0 0 8px #3ecbdb22 inset"
-        }}
-      />
-      <div
-        className="relative rounded-2xl shadow-2xl px-3 py-3 sm:px-8 sm:py-6 w-full max-w-lg max-h-[92vh] overflow-y-auto animate-fade-in-up transition-all duration-700 border-2"
-        style={{
-          background: themeCard,
-          borderColor: themePrimary,
-          fontSize: "0.98rem",
-          backdropFilter: "blur(18px)",
-        }}
+      <button
+        onClick={onClose}
+        className="absolute left-4 top-4 text-black-400 hover:text-[color:var(--theme-primary-light)] text-3xl focus:outline-none focus:ring-2 focus:ring-[color:var(--theme-primary)] rounded-full transition z-10 animate-bounce-in"
+        aria-label="back"
       >
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 text-gray-400 hover:text-[color:var(--theme-primary-light)] text-3xl focus:outline-none focus:ring-2 focus:ring-[color:var(--theme-primary)] rounded-full transition z-10 animate-bounce-in"
-          aria-label="Close"
-        >
-          &times;
-        </button>
-        <h2
-          className="text-2xl sm:text-3xl font-extrabold mb-2 text-center tracking-tight drop-shadow animate-fade-in"
-          style={{ color: themePrimary }}
-        >
-          Book Your Demo
-        </h2>
-        <div className="text-center mb-4 text-gray-600 text-sm animate-fade-in delay-100">
-          <span className="font-semibold" style={{ color: themePrimary }}>Date:</span> {prettyDate}
-          &nbsp;|&nbsp;
-          <span className="font-semibold" style={{ color: themePrimary }}>Time:</span> {formatTimeRange(slot.start_time, slot.end_time)}
-          <div style={{ fontSize: "0.85em", color: "#888", marginTop: 2 }}>
-            {/* [Debug: Raw slot.date = <b>{slot?.date}</b>] */}
-          </div>
+        ←
+      </button>
+      <h2
+        className="text-2xl font-semibold  mb-2 text-center  animate-fade-in"
+        style={{ color: themePrimary }}
+      >
+        Book Your Demo
+      </h2>
+      <div className="text-center mb-4 text-gray-600 text-sm animate-fade-in delay-100">
+        <span className="font-semibold" style={{ color: themePrimary }}>Date:</span> {prettyDate}
+        &nbsp;|&nbsp;
+        <span className="font-semibold" style={{ color: themePrimary }}>Time:</span> {formatTimeRange(slot.start_time, slot.end_time)}
+        <div style={{ fontSize: "0.85em", color: "#888", marginTop: 2 }}>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 animate-fade-in-up delay-150">
-          <div className="flex flex-col sm:flex-row gap-2">
-            <div className="flex-1">
+      </div>
+      <div className="">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 animate-fade-in-up delay-150 ">
+          <div className="grid sm:grid-cols-2 gap-4 max-w-[42rem] w-full mx-auto">
+            <div>
               <label className="block mb-1 font-medium" style={{ color: themePrimary }}>First Name *</label>
               <input
-                className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${
-                  errors.firstName
-                    ? "border-red-400 focus:ring-red-300"
-                    : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
+                className={`w-full border rounded-md border-gray-400 px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${errors.firstName
+                  ? "border-red-400 focus:ring-red-300"
+                  : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
                 }`}
                 value={firstName}
                 onChange={e => handleChange("firstName", e.target.value)}
@@ -772,13 +749,13 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
               />
               {errors.firstName && <div className="text-red-600 text-xs mt-1">{errors.firstName}</div>}
             </div>
-            <div className="flex-1">
+
+            <div>
               <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Last Name *</label>
               <input
-                className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${
-                  errors.lastName
-                    ? "border-red-400 focus:ring-red-300"
-                    : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
+                className={`w-full border rounded-md border-gray-400 px-3 py-2 shadow focus:outline-none focus:ring-2 ${errors.lastName
+                  ? "border-red-400 focus:ring-red-300"
+                  : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
                 }`}
                 value={lastName}
                 onChange={e => handleChange("lastName", e.target.value)}
@@ -787,110 +764,116 @@ export default function DemoRegistrationForm({ slot, onClose, onSubmit }) {
               />
               {errors.lastName && <div className="text-red-600 text-xs mt-1">{errors.lastName}</div>}
             </div>
-          </div>
-          <div>
-            <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Company Name</label>
-            <input
-              className="w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
-              value={company}
-              onChange={e => handleChange("company", e.target.value)}
-              autoComplete="organization"
-              style={{ color: themePrimary }}
-            />
-            {errors.company && <div className="text-red-600 text-xs mt-1">{errors.company}</div>}
-          </div>
-          <div>
-            <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Mobile Number (with country code) *</label>
-            <PhoneInput
-              country={'in'}
-              value={mobile}
-              onChange={value => {
-                handleChange("mobile", value ? ("+" + value) : "");
-              }}
-              inputClass={`w-full ${errors.mobile ? 'border-red-400' : 'border-[color:var(--theme-primary)]'}`}
-              inputProps={{
-                name: 'mobile',
-                required: true,
-                autoFocus: false
-              }}
-              disableDropdown={false}
-              enableSearch
-              countryCodeEditable={true}
-            />
-            {errors.mobile && <div className="text-red-600 text-xs mt-1">{errors.mobile}</div>}
-          </div>
-          <div>
-            <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Email *</label>
-            <input
-              className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${
-                errors.email
-                  ? "border-red-400 focus:ring-red-300"
-                  : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
-              }`}
-              value={email}
-              onChange={e => handleChange("email", e.target.value)}
-              autoComplete="email"
-              style={{ color: themePrimary }}
-            />
-            {errors.email && <div className="text-red-600 text-xs mt-1">{errors.email}</div>}
-          </div>
-          <div>
-            <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Description *</label>
-            <textarea
-              className={`w-full border-2 rounded-lg px-3 py-2 shadow focus:outline-none focus:ring-2 bg-white/80 ${
-                errors.description
-                  ? "border-red-400 focus:ring-red-300"
-                  : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
-              }`}
-              rows={3}
-              value={description}
-              onChange={e => handleChange("description", e.target.value)}
-              placeholder="What do you want to know about us?"
-              style={{ color: themePrimary }}
-            />
-            {errors.description && <div className="text-red-600 text-xs mt-1">{errors.description}</div>}
-          </div>
-          <div>
-            <label className="block mb-1 font-medium" style={{ color: themePrimary }}>
-              Guests <span className="text-xs text-gray-400">(type or paste emails, press space/comma/enter, max 30)</span>
-            </label>
-            <div className="w-full border-2 rounded-lg px-2 py-2 bg-white/80 min-h-[48px] flex flex-wrap items-center">
-              {guests.map((guest, idx) => (
-                <span
-                  key={idx}
-                  className="flex items-center bg-[color:var(--theme-primary-light)] text-[color:var(--theme-primary)] px-2 py-1 rounded mr-2 mb-1"
-                >
-                  {guest}
-                  <button
-                    type="button"
-                    className="ml-1 text-red-600 hover:text-red-800 focus:outline-none"
-                    onClick={() => handleRemoveGuest(idx)}
-                    aria-label="Remove"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
+
+            {/* Company Name */}
+            <div className="sm:col-span-1">
+              <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Company Name</label>
               <input
-                ref={guestInputRef}
-                type="text"
-                className="flex-1 min-w-[120px] bg-transparent border-none focus:outline-none text-[color:var(--theme-primary)]"
-                placeholder="Add guest email and press space/comma/enter or paste list"
-                value={guestInput}
-                onChange={e => {
-                  setGuestInput(e.target.value);
-                  setErrors((prev) => ({ ...prev, guests: "" }));
-                }}
-                onKeyDown={handleGuestInputKeyDown}
-                onPaste={handleGuestInputPaste}
-                onBlur={() => setGuestInputTouched(true)}
+                className="w-full border rounded-md border-gray-400 px-3 py-2 shadow focus:outline-none focus:ring-2"
+                value={company}
+                onChange={e => handleChange("company", e.target.value)}
+                autoComplete="organization"
                 style={{ color: themePrimary }}
               />
+              {errors.company && <div className="text-red-600 text-xs mt-1">{errors.company}</div>}
             </div>
-            {(guestInputTouched || submitting) && errors.guests && (
-              <div className="text-red-600 text-xs mt-1">{errors.guests}</div>
-            )}
+
+            {/* Mobile Number */}
+            <div className="sm:col-span-1">
+              <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Mobile Number (with country code) *</label>
+              <PhoneInput
+                country={'in'}
+                value={mobile}
+                onChange={value => {
+                  handleChange("mobile", value ? ("+" + value) : "");
+                }}
+                inputClass={`w-full  border rounded-md border-gray-400 px-3 py-2 shadow focus:outline-none focus:ring-2   min-h-[42px] ${errors.mobile ? 'border-red-400 focus:ring-red-300' : 'border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]'
+                  }`}
+                inputProps={{
+                  name: 'mobile',
+                  required: true,
+                  autoFocus: false
+                }}
+                disableDropdown={false}
+                enableSearch
+                countryCodeEditable={true}
+              />
+              {errors.mobile && <div className="text-red-600 text-xs mt-1">{errors.mobile}</div>}
+            </div>
+
+            {/* Email */}
+            <div className="sm:col-span-1">
+              <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Email *</label>
+              <input
+                className={`w-full border rounded-md border-gray-400 px-3 py-2 shadow focus:outline-none focus:ring-2 ${errors.email
+                  ? "border-red-400 focus:ring-red-300"
+                  : "border-[color:var(--theme-primary)] focus:ring-[color:var(--theme-primary-light)]"
+                }`}
+                value={email}
+                onChange={e => handleChange("email", e.target.value)}
+                autoComplete="email"
+                style={{ color: themePrimary }}
+              />
+              {errors.email && <div className="text-red-600 text-xs mt-1">{errors.email}</div>}
+            </div>
+            <div className="sm:col-span-1">
+              <label className="block mb-1 font-medium" style={{ color: themePrimary }}>
+                Guests <span className="text-xs text-gray-400">(type or paste emails, max 30)</span>
+              </label>
+              <div className="w-full border rounded-md border-gray-400 px-3 py-2 shadow focus:outline-none focus:ring-2 min-h-[42px] flex flex-wrap items-center">
+                {guests.map((guest, idx) => (
+                  <span
+                    key={idx}
+                    className="flex items-center bg-[color:var(--theme-primary-light)] text-[color:var(--theme-primary)] px-2 py-1 rounded mr-2 mb-1"
+                  >
+                    {guest}
+                    <button
+                      type="button"
+                      className="ml-1 text-red-600 hover:text-red-800 focus:outline-none"
+                      onClick={() => handleRemoveGuest(idx)}
+                      aria-label="Remove"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+                <input
+                  ref={guestInputRef}
+                  type="text"
+                  className="flex-1 min-w-[120px] bg-transparent border-none focus:outline-none text-[color:var(--theme-primary)]"
+                  placeholder="Add guest email and press space/comma/enter or paste list"
+                  value={guestInput}
+                  onChange={e => {
+                    setGuestInput(e.target.value);
+                    setErrors((prev) => ({ ...prev, guests: "" }));
+                  }}
+                  onKeyDown={handleGuestInputKeyDown}
+                  onPaste={handleGuestInputPaste}
+                  onBlur={() => setGuestInputTouched(true)}
+                  style={{ color: themePrimary }}
+                />
+              </div>
+              {(guestInputTouched || submitting) && errors.guests && (
+                <div className="text-red-600 text-xs mt-1">{errors.guests}</div>
+              )}
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block mb-1 font-medium" style={{ color: themePrimary }}>Description *</label>
+              <textarea
+                className={`w-full border rounded-md border-gray-400 px-3 py-2 shadow focus:outline-none focus:ring-2 ${errors.description
+                  ? "border-red-400 focus:ring-red-300"
+                  : "w-full border rounded-md border-gray-400 px-3 py-2 shadow focus:outline-none focus:ring-2"
+                }`}
+                rows={3}
+                value={description}
+                onChange={e => handleChange("description", e.target.value)}
+                placeholder="What do you want to know about us?"
+                style={{ color: themePrimary }}
+              />
+              {errors.description && <div className="text-red-600 text-xs mt-1">{errors.description}</div>}
+            </div>
           </div>
+
           <button
             className="w-full py-2.5 text-lg text-white rounded-lg font-bold shadow transition-all duration-150 disabled:opacity-60 animate-fade-in delay-200"
             style={{

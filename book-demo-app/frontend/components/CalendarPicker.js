@@ -49,20 +49,15 @@ export default function CalendarPicker({
 
   const themePrimary = "var(--theme-primary)";
 
-  // console.log("DEBUG CalendarPicker selectedDate:", selectedDate);
-
   return (
     <section
-      className="w-full max-w-md mx-auto rounded-2xl p-4 shadow-card border animate-fade-in-up"
-      style={{
-        background: "var(--theme-card, #fff)",
-        borderColor: themePrimary,
-      }}
+      className="w-full max-w-md mx-auto rounded-xl p-4 shadow-card border animate-fade-in-up"
+     
     >
       <div className="flex justify-between items-center mb-3">
         <button
           onClick={handlePrevMonth}
-          className="p-2 rounded-full bg-[color:var(--theme-bg-light)] hover:bg-[color:var(--theme-primary-light)] shadow active:scale-90 animate-bounce-in border"
+          className="p-2 h-10 w-10 flex justify-center  items-center rounded-full bg-[color:var(--theme-bg-light)] hover:bg-[color:var(--theme-primary-light)] "
           style={{ borderColor: themePrimary }}
           aria-label="Previous month"
         >
@@ -76,28 +71,25 @@ export default function CalendarPicker({
         </span>
         <button
           onClick={handleNextMonth}
-          className="p-2 rounded-full bg-[color:var(--theme-bg-light)] hover:bg-[color:var(--theme-primary-light)] shadow active:scale-90 animate-bounce-in border"
+          className="p-2 h-10 w-10 flex justify-center items-center rounded-full bg-[color:var(--theme-bg-light)] hover:bg-[color:var(--theme-primary-light)] "
           style={{ borderColor: themePrimary }}
           aria-label="Next month"
         >
           <span className="text-xl" style={{ color: themePrimary }}>&gt;</span>
         </button>
       </div>
-      <div className="grid grid-cols-7 gap-1 text-center text-xs sm:text-sm mb-1 animate-fade-in delay-100">
+      <div className="grid grid-cols-7 gap-1 text-center text-sm pb-2 sm:text-sm mb-1 animate-fade-in delay-100">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
           <div
             key={d}
-            className="font-semibold px-1 py-1 rounded"
-            style={{
-              color: themePrimary,
-              background: "var(--theme-bg-light)",
-            }}
+            className="font-normal px-1 py-1 "
+          
           >
             {d}
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-1 text-center animate-fade-in-up delay-150">
+      <div className="grid grid-cols-7 gap-2 text-center animate-fade-in-up delay-150">
         {days.map((date, idx) =>
           date ? (
             <button
@@ -109,15 +101,15 @@ export default function CalendarPicker({
                 onDateSelect(formatted);
               }}
               className={[
-                "py-2 rounded-lg font-bold duration-200 shadow-sm outline-none focus:ring-2",
+                "py-2 rounded-full  h-10 lg:h-12 w-10 lg:w-12 font-normal duration-200 shadow-sm outline-none ",
                 selectedDate &&
                 formatLocalDate(date) === selectedDate
-                  ? "bg-[color:var(--theme-primary)] text-white scale-110 shadow-lg border-2 border-[color:var(--theme-primary-light)] animate-bounce-in"
+                  ? "bg-[color:var(--theme-primary)] text-white scale-110 shadow-lg   animate-bounce-in"
                   : isPast(date)
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                   : highlightedDates.includes(formatLocalDate(date))
-                  ? "bg-[color:var(--theme-primary-light)] text-white hover:bg-[color:var(--theme-primary)] hover:text-white border-2 border-[color:var(--theme-primary-light)] shadow-md animate-pulse"
-                  : "hover:bg-[color:var(--theme-bg-light)] hover:scale-105 bg-white/70 text-[color:var(--theme-primary)] border"
+                  ? "bg-[color:var(--theme-bg-light)]  text-[#005e6a] hover:bg-[color:var(--theme-primary)] hover:text-white  shadow-md"
+                  : "hover:bg-[color:var(--theme-bg-light)] hover:scale-105 bg-white/70 text-[color:var(--theme-primary)] cursor-not-allowed "
               ].join(" ")}
               style={{
                 borderColor: themePrimary,

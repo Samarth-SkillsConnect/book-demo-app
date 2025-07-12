@@ -20,7 +20,7 @@ export default function SlotSelector({ slots, onSlotSelect, selectedSlot, loadin
         <button
           key={slot.id}
           onClick={() => onSlotSelect(slot)}
-          className={`px-4 py-2 rounded border transition ${
+          className={`px-4 py-2 rounded border transition w-full ${
             selectedSlot && selectedSlot.id === slot.id
               ? "bg-blue-600 text-white border-blue-600"
               : "bg-white text-gray-800 border-gray-300 hover:bg-blue-100"
