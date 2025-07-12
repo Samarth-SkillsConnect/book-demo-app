@@ -1,6 +1,6 @@
 export default function CompanyInfo() {
   return (
-    <section className="text-center w-full animate-fade-in-up bg-white/70 backdrop-blur rounded-2xl px-4 sm:px-8 py-6 shadow-card mb-4 border border-[color:var(--theme-primary)] relative z-10">
+    <section className="text-center ">
       <h1
         className="text-3xl sm:text-4xl font-extrabold mb-2 drop-shadow animate-fade-in"
         style={{

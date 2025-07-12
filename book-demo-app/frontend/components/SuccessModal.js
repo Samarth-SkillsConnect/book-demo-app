@@ -4,25 +4,22 @@ export default function SuccessModal({ data, onClose }) {
 
   const themePrimary = "var(--theme-primary)";
   const themePrimaryLight = "var(--theme-primary-light)";
-  const themeBgLight = "var(--theme-bg-light)";
   const themeCard = "var(--theme-card)";
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center px-3 py-6 animate-fade-in"
-      style={{
-        background: "linear-gradient(135deg, #005e6a33 0%, #3ecbdb18 100%)"
-      }}
+      className="fixed inset-0 z-50 flex items-center justify-center px-3 py-6 animate-fade-in bg-gray-600/50"
+    
     >
   
       <div
-        className="absolute inset-0 pointer-events-none z-0 rounded-2xl border-4 border-transparent"
+        className="absolute inset-0 pointer-events-none z-0 rounded-2xl border-transparent"
         style={{
           boxShadow: "0 0 40px 3px #005e6a33, 0 0 0 8px #3ecbdb22 inset"
         }}
       />
       <div
-        className="relative rounded-2xl shadow-2xl px-4 py-8 sm:px-8 w-full max-w-md text-center animate-fade-in-up transition-all duration-700 border-2 z-10"
+        className="relative rounded-2xl shadow-2xl px-4 py-8 sm:px-8 w-full max-w-md text-center animate-fade-in-up transition-all duration-700 z-10"
         style={{
           background: themeCard,
           borderColor: themePrimary,
@@ -42,16 +39,16 @@ export default function SuccessModal({ data, onClose }) {
           </div>
         </div>
         <h2
-          className="text-2xl sm:text-3xl font-extrabold mb-2 drop-shadow animate-fade-in"
+          className="text-2xl sm:text-3xl font-normal mb-3 drop-shadow animate-fade-in"
           style={{ color: themePrimary }}
         >
           Demo Booked Successfully!
         </h2>
-        <p className="mb-1" style={{ color: themePrimary }}>
+        <p className=" text-gray-500 text-md" >
           Thank you <span className="font-semibold">{data.first_name} {data.last_name}</span> for booking a demo.
         </p>
-        <p className="text-gray-700">
-          A confirmation has been sent to <span className="font-semibold" style={{ color: themePrimaryLight }}>{data.email}</span>
+        <p className=" text-gray-500 text-md">
+          A confirmation has been sent to <span className="font-semibold text-teal-800">{data.email}</span>
         </p>
         {data.guests && data.guests.length > 0 && (
           <p className="mt-2 text-xs" style={{ color: themePrimaryLight }}>

@@ -43,10 +43,10 @@ export default function Home() {
             letterSpacing: "0.01em"
           }}
         >
-          SAMS Pvt Ltd
+          Skills connect
         </h1>
         <p className="mb-2 text-base sm:text-lg text-gray-700 font-medium text-center animate-fade-in delay-100">
-          Powering Digital Transformation Worldwide
+          Campus Hiring Platform
         </p>
         {/* Contact & Location - responsive card grid */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 w-full justify-center items-stretch mb-4 animate-fade-in delay-150">
@@ -58,8 +58,8 @@ export default function Home() {
             }}
           >
             <span className="font-semibold mb-1" style={{ color: "var(--theme-primary, #005e6a)" }}>Contact</span>
-            <span className="text-gray-600 text-xs sm:text-sm break-all">samarth@sams.com</span>
-            <span className="text-gray-600 text-xs sm:text-sm">+91 9833431924</span>
+            <span className="text-gray-600 text-xs sm:text-sm break-all">support@skillsconnect.in</span>
+            <span className="text-gray-600 text-xs sm:text-sm">+91 9870470502</span>
           </div>
           <div
             className="rounded-xl px-4 py-3 flex-1 flex flex-col items-center shadow hover:shadow-md transition min-w-[120px]"
@@ -73,7 +73,7 @@ export default function Home() {
           </div>
         </div>
         <p className="mb-6 text-gray-500 text-xs sm:text-base max-w-xl text-center animate-fade-in delay-200">
-          Discover how our <span style={{ color: "var(--theme-primary)", fontWeight: 600 }}>innovative solutions</span> can drive success for your business.<br />
+          Discover how our <span style={{ color: "var(--theme-primary)", fontWeight: 600 }}></span> Our campus hiring solution incorporates corporate branding seamlessly within the campus hiring process.<br />
           <span className="block mt-1">Schedule a personalized demo with our expert team.</span>
         </p>
         {/* CTA Button */}
@@ -90,7 +90,7 @@ export default function Home() {
           🚀 Book a Demo
         </Link>
         <div className="mt-6 sm:mt-8 text-[10px] sm:text-xs text-gray-400 tracking-wide text-center animate-fade-in delay-500">
-          &copy; {new Date().getFullYear()} SAMS Pvt Ltd. All rights reserved.
+          &copy; {new Date().getFullYear()} © UPSKILL TECH SOLUTIONS PRIVATE LIMITED. All Rights Reserved.
         </div>
       </section>
     </main>

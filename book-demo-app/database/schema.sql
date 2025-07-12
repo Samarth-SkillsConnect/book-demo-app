@@ -20,3 +20,11 @@ CREATE TABLE IF NOT EXISTS bookings (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (slot_id) REFERENCES demo_slots(id)
 );
+
+CREATE TABLE custom_slots (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  date DATE NOT NULL,
+  openClose VARCHAR(10) NOT NULL,
+  start VARCHAR(5),
+  end VARCHAR(5)
+);

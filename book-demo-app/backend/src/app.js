@@ -11,10 +11,12 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.json({ limit: '50mb' })); 
+app.use(express.json({ limit: '50mb' }));
+app.use('/api/admin', require('./routes/apiAdminLogin')); 
 app.use('/api', bookingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/demo-slots', demoSlotsRoutes);
+
 
 module.exports = app;
 

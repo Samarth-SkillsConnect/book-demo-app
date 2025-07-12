@@ -77,18 +77,109 @@ exports.bookDemo = async (req, res) => {
   }
 };
 
+// exports.bulkCreateSlots = async (req, res) => {
+//   try {
+//     const { slots } = req.body;
+//     if (!Array.isArray(slots) || slots.length === 0) {
+//       return res.status(400).json({ message: "No slots provided." });
+//     }
+//     const values = slots.map(({ date, start_time, end_time }) => [date, start_time, end_time, 0]);
+//     await pool.query(
+//       'INSERT INTO demo_slots (date, start_time, end_time, is_booked) VALUES ?',
+//       [values]
+//     );
+//     res.json({ message: "Slots created successfully!" });
+//   } catch (err) {
+//     res.status(500).json({ message: "Failed to create slots", error: err.message });
+//   }
+// };
+
+
+
+// exports.bulkCreateSlots = async (req, res) => {
+//   try {
+//     const { slots, day } = req.body; // slots is [{date, start_time, end_time}], day is 'mon', 'tue', etc.
+
+//     if (!Array.isArray(slots) || slots.length === 0) {
+//       return res.status(400).json({ message: "No slots provided." });
+//     }
+//     if (!day) {
+//       return res.status(400).json({ message: "Day of week is required." });
+//     }
+
+//     // Step 1: Find all future slots for this day of week
+//     const [existingSlots] = await pool.query(
+//       'SELECT id FROM demo_slots WHERE day_of_week = ? AND date >= CURDATE()',
+//       [day]
+//     );
+
+//     // Step 2: Delete only those slots that have no bookings
+//     for (const slot of existingSlots) {
+//       const [bookings] = await pool.query(
+//         'SELECT id FROM bookings WHERE slot_id = ?',
+//         [slot.id]
+//       );
+//       if (bookings.length === 0) {
+//         await pool.query('DELETE FROM demo_slots WHERE id = ?', [slot.id]);
+//       }
+//     }
+
+//     // Step 3: Insert new slots
+//     const values = slots.map(({ date, start_time, end_time }) => [date, start_time, end_time, 0, day, 'active']);
+//     await pool.query(
+//       'INSERT INTO demo_slots (date, start_time, end_time, is_booked, day_of_week, day_status) VALUES ?',
+//       [values]
+//     );
+
+//     res.json({ message: "Slots updated successfully for day: " + day });
+//   } catch (err) {
+//     res.status(500).json({ message: "Failed to create slots", error: err.message });
+//   }
+// };
+
+
+
+
+
 exports.bulkCreateSlots = async (req, res) => {
   try {
-    const { slots } = req.body;
-    if (!Array.isArray(slots) || slots.length === 0) {
-      return res.status(400).json({ message: "No slots provided." });
+    const { daysConfig } = req.body;
+    if (!Array.isArray(daysConfig) || daysConfig.length === 0) {
+      return res.status(400).json({ message: "No daysConfig provided." });
     }
-    const values = slots.map(({ date, start_time, end_time }) => [date, start_time, end_time, 0]);
-    await pool.query(
-      'INSERT INTO demo_slots (date, start_time, end_time, is_booked) VALUES ?',
-      [values]
-    );
-    res.json({ message: "Slots created successfully!" });
+
+    for (const dayObj of daysConfig) {
+      const { day, slots } = dayObj;
+      if (!day || !Array.isArray(slots) || slots.length === 0) continue;
+
+      // 1. Find all future slots for this day_of_week
+      const [existingSlots] = await pool.query(
+        'SELECT id FROM demo_slots WHERE day_of_week = ? AND date >= CURDATE()',
+        [day]
+      );
+
+      // 2. Delete only those slots that have no bookings
+      for (const slot of existingSlots) {
+        const [bookings] = await pool.query(
+          'SELECT id FROM bookings WHERE slot_id = ?',
+          [slot.id]
+        );
+        if (bookings.length === 0) {
+          await pool.query('DELETE FROM demo_slots WHERE id = ?', [slot.id]);
+        }
+      }
+
+      // 3. Insert new slots
+      if (slots.length > 0) {
+        const values = slots.map(({ date, start_time, end_time }) => [date, start_time, end_time, 0, day, 'active']);
+        await pool.query(
+          'INSERT INTO demo_slots (date, start_time, end_time, is_booked, day_of_week, day_status) VALUES ?',
+          [values]
+        );
+      }
+    }
+
+    res.json({ message: "Slots updated successfully for selected days." });
   } catch (err) {
     res.status(500).json({ message: "Failed to create slots", error: err.message });
   }
