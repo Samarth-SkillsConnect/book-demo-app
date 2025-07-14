@@ -108,7 +108,7 @@ export default function AdminDashboard() {
     setLoadingBookings(true);
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("http://localhost:5000/api/admin/bookings", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/bookings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to fetch bookings");
@@ -123,7 +123,7 @@ export default function AdminDashboard() {
   async function fetchSlots() {
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("http://localhost:5000/api/admin/slots", {
+      const res = await fetch("${API_BASE_URL}/api/admin/slots", {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -148,7 +148,7 @@ export default function AdminDashboard() {
     if (!meet_link) return;
     setActionLoading(id);
     const token = localStorage.getItem("adminToken");
-    await fetch(`http://localhost:5000/api/admin/bookings/${id}/accept`, {
+    await fetch(`${API_BASE_URL}/api/admin/bookings/${id}/accept`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ meet_link }),
@@ -193,7 +193,7 @@ export default function AdminDashboard() {
     if (!rescheduleBooking) return;
     setActionLoading(rescheduleBooking.id);
     const token = localStorage.getItem("adminToken");
-    await fetch(`http://localhost:5000/api/admin/bookings/${rescheduleBooking.id}/reschedule`, {
+    await fetch(`${API_BASE_URL}/api/admin/bookings/${rescheduleBooking.id}/reschedule`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({
