@@ -117,15 +117,15 @@ exports.sendInitiatedEmail = async ({
       new Set([email, ADMIN_EMAIL, ...guestList].filter(Boolean))
     );
 
-    const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752064329/image_rx0mkl.png";
-    const companyName = "Skills Connect";
+    const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752483284/image_rx0mkl_zm8w4a.png";
+    // const companyName = "Skills Connect";
 
     const html = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow:0 2px 18px #0001;">
+        <table width="100%" cellpadding="0" cellspacing="0" style=" margin: 0 auto; background: #fff; border-radius: 12px; box-shadow:0 2px 18px #0001;">
           <tr>
             <td align="center" style="padding: 36px 0 10px 0;">
-              <img src="${companyLogo}" alt="${companyName} Logo" />
+              <img src="${companyLogo}" alt="${companyName} Logo" width="200" />
               <h1 style="margin: 18px 0 0 0; font-size: 2.1rem; color: #006691; letter-spacing:1px;">${companyName}</h1>
               <div style="font-size: 1.24rem; color:#22b8ba; margin-top: 8px; font-weight: 600;">Demo Request Initiated</div>
             </td>
@@ -202,15 +202,15 @@ exports.sendAcceptedEmail = async ({
     );
     console.log('Recipients:', allRecipients);
 
-    const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752064329/image_rx0mkl.png";
-    const companyName = "Skills Connect";
+    const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752483284/image_rx0mkl_zm8w4a.png";
+    // const companyName = "Skills Connect";
 
     const html = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow:0 2px 18px #0001;">
+        <table width="100%" cellpadding="0" cellspacing="0" style=" margin: 0 auto; background: #fff; border-radius: 12px; box-shadow:0 2px 18px #0001;">
           <tr>
             <td align="center" style="padding: 36px 0 10px 0;">
-              <img src="${companyLogo}" alt="${companyName} Logo" />
+              <img src="${companyLogo}" alt="${companyName} Logo"  width="200" />
               <h1 style="margin: 18px 0 0 0; font-size: 2.1rem; color: #006691; letter-spacing:1px;">${companyName}</h1>
               <div style="font-size: 1.24rem; color:#22b8ba; margin-top: 8px; font-weight: 600;">Demo Slot Booked!</div>
             </td>
@@ -258,7 +258,7 @@ exports.sendAcceptedEmail = async ({
                 </tr>
               </table>
               <div style="margin: 18px 0 18px 0;">
-                <a href="#" style="display: inline-block; background: linear-gradient(90deg,#006691,#22b8ba); color:#fff; font-weight:600; padding:12px 34px; border-radius:24px; text-decoration:none; font-size:1.03rem; letter-spacing:0.5px; box-shadow:0 2px 8px #22b8ba22;">Add to Calendar</a>
+                <a href="#" style="display: inline-block; background: linear-gradient(90deg,#006691,#22b8ba); color:#fff; font-weight:600; padding:12px 34px; border-radius:12px; text-decoration:none; font-size:1.03rem; letter-spacing:0.5px; box-shadow:0 2px 8px #22b8ba22;">Add to Calendar</a>
               </div>
               <div style="font-size:0.95rem; color:#888; margin: 12px 0 0 0;">You will find a calendar invitation attached to this email.</div>
               <div style="margin-top:32px; color:#aaa; font-size:13px; text-align:center;">
@@ -308,15 +308,15 @@ exports.sendRescheduleEmails = async ({
       new Set([email, ADMIN_EMAIL, ...guestList].filter(Boolean))
     );
 
-    const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752064329/image_rx0mkl.png";
-    const companyName = "Skills Connect";
+    const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752483284/image_rx0mkl_zm8w4a.png";
+    // const companyName = "Skills Connect";
 
     const html = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
         <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow:0 2px 18px #0001;">
           <tr>
             <td align="center" style="padding: 36px 0 10px 0;">
-              <img src="${companyLogo}" alt="${companyName} Logo" />
+              <img src="${companyLogo}" alt="${companyName} Logo" width="200" />
               <h1 style="margin: 18px 0 0 0; font-size: 2.1rem; color: #006691; letter-spacing:1px;">${companyName}</h1>
               <div style="font-size: 1.24rem; color:#22b8ba; margin-top: 8px; font-weight: 600;">Demo Rescheduled</div>
             </td>
@@ -358,7 +358,7 @@ exports.sendRescheduleEmails = async ({
                 ` : ""}
               </table>
               <div style="margin: 18px 0 18px 0;">
-                <a href="#" style="display: inline-block; background: linear-gradient(90deg,#006691,#22b8ba); color:#fff; font-weight:600; padding:12px 34px; border-radius:24px; text-decoration:none; font-size:1.03rem; letter-spacing:0.5px; box-shadow:0 2px 8px #22b8ba22;">Add to Calendar</a>
+                <a href="#" style="display: inline-block; background: linear-gradient(90deg,#006691,#22b8ba); color:#fff; font-weight:600; padding:12px 34px; border-radius:12px; text-decoration:none; font-size:1.03rem; letter-spacing:0.5px; box-shadow:0 2px 8px #22b8ba22;">Add to Calendar</a>
               </div>
               <div style="font-size:0.95rem; color:#888; margin: 12px 0 0 0;">You will find a calendar invitation attached to this email.</div>
               <div style="margin-top:32px; color:#aaa; font-size:13px; text-align:center;">
