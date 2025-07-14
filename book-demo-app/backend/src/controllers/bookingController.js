@@ -40,9 +40,9 @@ exports.bookDemo = async (req, res) => {
     if (!slot || slot.is_booked) return res.status(400).json({ message: 'Slot not available' });
 
     // Uncomment if you want to block multiple bookings from same IP
-    if (!test && await Booking.hasBookedInLast24Hours(ip_address)) {
-      return res.status(403).json({ message: 'You have already booked in the last 24 hours.' });
-    }
+    // if (!test && await Booking.hasBookedInLast24Hours(ip_address)) {
+    //   return res.status(403).json({ message: 'You have already booked in the last 24 hours.' });
+    // }
 
     const guestArray = guests
       ? guests.split(',').map(g => g.trim()).filter(g => g && g.includes('@'))

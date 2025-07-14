@@ -123,7 +123,7 @@ export default function AdminDashboard() {
   async function fetchSlots() {
     try {
       const token = localStorage.getItem("adminToken");
-      const res = await fetch("${API_BASE_URL}/api/admin/slots", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/slots`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();

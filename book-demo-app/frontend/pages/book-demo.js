@@ -4,8 +4,9 @@ import SlotSelector from "../components/SlotSelector";
 import DemoRegistrationForm from "../components/DemoRegistrationForm";
 import SuccessModal from "../components/SuccessModal";
 
-// const API_BASE_URL = "${API_BASE_URL}/api";
-const API_BASE_URL = "https://book-demo-app-1.onrender.com/api";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+// const API_BASE_URL = "https://book-demo-app-1.onrender.com/api";
 
 export default function BookDemoPage() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -55,7 +56,7 @@ export default function BookDemoPage() {
   const handleFormSubmit = async (formData, testMode = false) => {
     setError(null);
     try {
-      const res = await fetch(`${API_BASE_URL}/book-demo${testMode ? "?test=true" : ""}`, {
+      const res = await fetch(`${API_BASE_URL}/api/book-demo${testMode ? "?test=true" : ""}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
