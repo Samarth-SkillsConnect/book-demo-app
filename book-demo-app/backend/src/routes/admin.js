@@ -17,6 +17,7 @@ router.get('/slots/:id/bookings', adminController.getBookingsForSlot);
 // Booking management
 router.get('/bookings', adminController.getAllBookings);
 router.post('/bookings/:id/accept', adminController.acceptBooking);
+
 // router.post('/bookings/:id/reject', adminController.rejectBooking); // <-- remove or comment out Reject
 router.post('/bookings/:id/set-link', adminController.setBookingMeetLink);
 
