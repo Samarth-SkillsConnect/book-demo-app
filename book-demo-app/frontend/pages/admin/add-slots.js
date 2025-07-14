@@ -90,7 +90,7 @@ export default function AddSlotsPage() {
 
   async function fetchInactiveDays() {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/slots/days-status', {
+      const res = await fetch('${API_BASE_URL}/api/admin/slots/days-status', {
         headers: { ...getAuthHeader() }
       });
       const data = await res.json();
@@ -101,7 +101,7 @@ export default function AddSlotsPage() {
   }
 
   async function fetchDaySlotsConfig() {
-    const res = await fetch('http://localhost:5000/api/admin/slots/recurring', {
+    const res = await fetch('${API_BASE_URL}/api/admin/slots/recurring', {
       headers: { ...getAuthHeader() }
     });
     const data = await res.json();
@@ -135,7 +135,7 @@ export default function AddSlotsPage() {
   async function fetchAllCustomSlots() {
     setIsLoadingCustomSlots(true);
     try {
-      const res = await fetch("http://localhost:5000/api/admin/slots/custom", {
+      const res = await fetch("${API_BASE_URL}/api/admin/slots/custom", {
         headers: { ...getAuthHeader() }
       });
       if (!res.ok) throw new Error("Failed to fetch custom slots");
@@ -158,7 +158,7 @@ export default function AddSlotsPage() {
       const dayToDelete = daySlots[pendingDeleteDayIdx].day;
       try {
         const res = await fetch(
-          `http://localhost:5000/api/admin/slots/day/${dayToDelete}`,
+          `${API_BASE_URL}/api/admin/slots/day/${dayToDelete}`,
           {
             method: "DELETE",
             headers: { ...getAuthHeader() }
@@ -356,7 +356,7 @@ export default function AddSlotsPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/admin/slots/bulk-generate", {
+      const res = await fetch("${API_BASE_URL}/api/admin/slots/bulk-generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -396,7 +396,7 @@ export default function AddSlotsPage() {
       for (const slot of customSlots) {
         let res, data;
         if (slot.openClose === "open") {
-          res = await fetch("http://localhost:5000/api/admin/slots/custom", {
+          res = await fetch("${API_BASE_URL}/api/admin/slots/custom", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -410,7 +410,7 @@ export default function AddSlotsPage() {
             }),
           });
         } else if (slot.openClose === "close") {
-          res = await fetch("http://localhost:5000/api/admin/slots/custom", {
+          res = await fetch("${API_BASE_URL}/api/admin/slots/custom", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

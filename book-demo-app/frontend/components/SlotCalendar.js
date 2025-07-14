@@ -10,7 +10,7 @@ export default function SlotCalendar() {
   useEffect(() => {
     // Fetch dates from demo_slots table created by this admin (using JWT)
     const token = localStorage.getItem("adminToken");
-    fetch("http://localhost:5000/api/admin/slots", {
+    fetch("${API_BASE_URL}/api/admin/slots", {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
