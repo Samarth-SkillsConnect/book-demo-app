@@ -100,9 +100,9 @@ export default function BookDemoPage() {
     <main className="w-full min-h-screen flex flex-col overflow-x-hidden font-sans">
       {/* ------------------------------------------------------------------ */}
       <section className="flex-1 flex items-center justify-center w-full px-2 py-6 min-h-screen bg-gradient-to-br from-[#f6fcfa] to-[#eff6fb]">
-        <div className="w-full lg:w-[70%] bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden border border-gray-100">
+        <div className="w-[70%]  bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden border border-gray-100">
           {/* Left Panel: Company Info */}
-          <div className="w-full lg:max-w-[30%] flex flex-col items-center md:items-start px-6 py-8 md:py-10 border-b md:border-b-0 md:border-r border-gray-200 min-h-[400px]">
+          <div className="lg:w-[30%] flex flex-col items-center md:items-start px-6 py-8 md:py-10 border-b md:border-b-0 md:border-r border-gray-200 min-h-[400px]">
             <div className="w-full flex flex-col items-center md:items-start">
               {/* Company Logo / Info */}
               <img className="w-40" src="https://skillsconnect.blob.core.windows.net/skillsconnect/assets/frontend/images/logo/skillsconnect-logo-n.svg" alt="SkillsConnect Logo" />
@@ -120,6 +120,7 @@ export default function BookDemoPage() {
                   </svg>
                   <span className="text-gray-500 text-[15px] font-semibold">Web conferencing details provided upon confirmation.</span>
                 </div>
+              
                 <div className="text-gray-700 text-[15px] mb-2">
                   Ready to see how our platform can help your team to do campus hiring more effectively? Schedule a demo in the form below.
                 </div>
@@ -132,10 +133,10 @@ export default function BookDemoPage() {
 
           {/* Right Panel: Calendar, Slot Selection, or Registration Form */}
 
-          <div className="mx-auto">
+          <div className="w-[70%] mx-auto">
 
 
-            <div className=" w-full lg:w-[100%] flex flex-col px-4 sm:px-8 py-8 md:py-10 relative">
+            <div className="flex flex-col px-4 sm:px-8 py-8 md:py-10 relative">
 
               {showForm && selectedSlot ? (
 
@@ -151,12 +152,12 @@ export default function BookDemoPage() {
               ) : (
                 <>
                   {/* Right Panel: Calendar and Slot Selection */}
-                  <div className="">
+                
 
                     <h2 className="text-xl md:text-2xl font-bold pb-4 text-[#0a2342] text-center">Select a Date &amp; Time</h2>
                     <div className="flex flex-col md:flex-row gap-3">
                       {/* Calendar */}
-                      <div className="w-[100%] mx-auto flex justify-center">
+                      <div className=" w-[60%] mx-auto flex justify-center">
                         <CalendarPicker
                           onDateSelect={handleDateSelect}
                           selectedDate={selectedDate}
@@ -165,7 +166,7 @@ export default function BookDemoPage() {
                       </div>
 
                       {selectedDate && (
-                        <section className=" md:w-[60%] flex flex-col items-center max-h-[400px] w-full shadow md:shadow-none rounded-l-2xl md:rounded-none p-5 md:p-0">
+                        <section className=" w-[30%] flex flex-col items-center max-h-[400px] shadow md:shadow-none rounded-l-2xl md:rounded-none p-5 md:p-0">
                           <h1 className="text-center text-sm pt-2  text-[#0a2342]">
                             Choose an available time slot
                             <span className="block mb-2">
@@ -175,7 +176,7 @@ export default function BookDemoPage() {
                               })()}
                             </span>
                           </h1>
-                          <div className="overflow-auto w-full">
+                          <div className="overflow-auto w-[200px]">
                             <SlotSelector
                               slots={slots}
                               onSlotSelect={handleSlotSelect}
@@ -186,7 +187,7 @@ export default function BookDemoPage() {
                         </section>
                       )}
                     </div>
-                  </div>
+                  
 
 
                   {/* ------------------------------------------------------- */}
