@@ -13,13 +13,16 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const res = await fetch("${API_BASE_URL}/api/admin/login", {
+      // const res = await fetch("http://localhost:5000/api/admin/login", {
+      fetch(`${API_BASE_URL}/api/admin/login`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
