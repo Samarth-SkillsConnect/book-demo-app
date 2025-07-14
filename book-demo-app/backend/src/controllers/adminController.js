@@ -87,23 +87,6 @@ exports.getBookingsForSlot = async (req, res) => {
   }
 };
 
-
-// // Accept booking and set meet_link
-// exports.acceptBooking = async (req, res) => {
-//   const { id } = req.params;
-//   const { meet_link } = req.body;
-//   try {
-//     await pool.query(
-//       "UPDATE bookings SET status = 'accepted', meet_link = ? WHERE id = ?",
-//       [meet_link, id]
-//     );
-//     res.json({ message: "Booking accepted" });
-//   } catch (err) {
-//     res.status(500).json({ message: "Error accepting booking", error: err.message });
-//   }
-// };
-
-
 // Accept booking and set meet_link
 exports.acceptBooking = async (req, res) => {
   const { id } = req.params;
