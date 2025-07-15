@@ -125,7 +125,7 @@ export default function AddSlotsPage() {
             start: defaultStart,
             end: defaultEnd,
             interval: defaultInterval,
-            status: "inactive",
+            status: "active",
           };
         }
       })

@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 const bookingRoutes = require('./routes/booking');
 const adminRoutes = require('./routes/admin');
-const demoSlotsRoutes = require('./routes/demoSlots');
+const demoSlotsRouter = require('./routes/demoSlots');
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use('/api/admin', require('./routes/apiAdminLogin')); 
 app.use('/api', bookingRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/demo-slots', demoSlotsRoutes);
+app.use('/demo-slots', demoSlotsRouter);
 
 
 module.exports = app;

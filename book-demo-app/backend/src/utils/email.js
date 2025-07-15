@@ -118,7 +118,7 @@ exports.sendInitiatedEmail = async ({
     );
 
     const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752483284/image_rx0mkl_zm8w4a.png";
-    // const companyName = "Skills Connect";
+    const companyName = "";
 
     const html = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
@@ -203,7 +203,7 @@ exports.sendAcceptedEmail = async ({
     console.log('Recipients:', allRecipients);
 
     const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752483284/image_rx0mkl_zm8w4a.png";
-    // const companyName = "Skills Connect";
+    const companyName = "";
 
     const html = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
@@ -309,7 +309,7 @@ exports.sendRescheduleEmails = async ({
     );
 
     const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752483284/image_rx0mkl_zm8w4a.png";
-    // const companyName = "Skills Connect";
+    const companyName = "";
 
     const html = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
