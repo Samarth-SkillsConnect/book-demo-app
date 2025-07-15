@@ -42,7 +42,7 @@ export default function SuccessModal({ data, onClose }) {
           className="text-2xl sm:text-3xl font-normal mb-3 drop-shadow animate-fade-in"
           style={{ color: themePrimary }}
         >
-          Demo Booked Successfully!
+          Demo request has been initiated Successfully!
         </h2>
         <p className=" text-gray-500 text-md" >
           Thank you <span className="font-semibold">{data.first_name} {data.last_name}</span> for booking a demo.

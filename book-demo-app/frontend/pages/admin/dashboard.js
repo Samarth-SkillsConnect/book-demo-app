@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+
+
 // Utility for formatting local date as "YYYY-MM-DD"
 function toLocalDateString(dateObj) {
   const year = dateObj.getFullYear();
@@ -549,10 +552,11 @@ export default function AdminDashboard() {
             >
               &times;
             </button>
-            <h3 className="text-xl font-semibold mb-4 text-[#005e6a]">Reschedule Booking</h3>
+            <h3 className="text-center text-xl font-semibold mb-4 text-[#005e6a]">Reschedule Booking</h3>
             <div>
-              <label className="block font-medium mb-2 text-[#005e6a]">Select Date (Available Only)</label>
-              <Calendar
+              <label className="block text-center font-medium mb-2 text-[#005e6a]">Select Date (Available Only)</label>
+              <div className="flex justify-center">
+                <Calendar
                 onChange={handleRescheduleDateChange}
                 value={selectedRescheduleDate}
                 minDate={minDate}
@@ -570,12 +574,14 @@ export default function AdminDashboard() {
                 .react-calendar__tile--active {
                   background: #3ecbdb !important;
                   color: white !important;
+                  margin:auto;
                 }
                 .react-calendar__tile:disabled {
                   background: #f5fafd !important;
                   color: #aaa !important;
                 }
               `}</style>
+              </div>
             </div>
             {selectedRescheduleDate && (
               <form onSubmit={handleRescheduleSubmit} className="flex flex-col gap-4 mt-4">

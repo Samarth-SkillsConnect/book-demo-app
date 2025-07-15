@@ -12,11 +12,11 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-function getDateString(date) {
-  if (typeof date === 'string') return date;
-  if (date instanceof Date) return date.toISOString().slice(0, 10);
-  throw new Error('slot.date must be a string or Date object');
-}
+// function getDateString(date) {
+//   if (typeof date === 'string') return date;
+//   if (date instanceof Date) return date.toISOString().slice(0, 10);
+//   throw new Error('slot.date must be a string or Date object');
+// }
 
 function extractValidEmails(guests) {
   if (!guests) return [];
@@ -107,7 +107,7 @@ function generateICS({ slot, first_name, last_name, email, guests }) {
   });
 }
 
-// 1. DEMO REQUEST INITIATED EMAIL (user books slot)
+// DEMO REQUEST INITIATED EMAIL
 exports.sendInitiatedEmail = async ({
   slot, first_name, last_name, company_name, mobile_number, email, description, guests
 }) => {
@@ -118,7 +118,7 @@ exports.sendInitiatedEmail = async ({
     );
 
     const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752483284/image_rx0mkl_zm8w4a.png";
-    const companyName = "";
+    const companyName = "Skills Connect";
 
     const html = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
@@ -189,7 +189,7 @@ exports.sendInitiatedEmail = async ({
   }
 };
 
-// 2. DEMO BOOKED (ACCEPTED BY ADMIN) EMAIL
+// DEMO BOOKED (ACCEPTED BY ADMIN) EMAIL
 exports.sendAcceptedEmail = async ({
   slot, first_name, last_name, company_name, mobile_number, email, description, guests, meet_link
 }) => {
@@ -203,7 +203,7 @@ exports.sendAcceptedEmail = async ({
     console.log('Recipients:', allRecipients);
 
     const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752483284/image_rx0mkl_zm8w4a.png";
-    const companyName = "";
+    const companyName = "Skills Connect";
 
     const html = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
@@ -258,7 +258,6 @@ exports.sendAcceptedEmail = async ({
                 </tr>
               </table>
               <div style="margin: 18px 0 18px 0;">
-                <a href="#" style="display: inline-block; background: linear-gradient(90deg,#006691,#22b8ba); color:#fff; font-weight:600; padding:12px 34px; border-radius:12px; text-decoration:none; font-size:1.03rem; letter-spacing:0.5px; box-shadow:0 2px 8px #22b8ba22;">Add to Calendar</a>
               </div>
               <div style="font-size:0.95rem; color:#888; margin: 12px 0 0 0;">You will find a calendar invitation attached to this email.</div>
               <div style="margin-top:32px; color:#aaa; font-size:13px; text-align:center;">
@@ -289,7 +288,7 @@ exports.sendAcceptedEmail = async ({
   }
 };
 
-// 3. DEMO RESCHEDULED EMAIL (already implemented)
+// DEMO RESCHEDULED EMAIL
 exports.sendRescheduleEmails = async ({
   slot,
   first_name,
@@ -309,7 +308,7 @@ exports.sendRescheduleEmails = async ({
     );
 
     const companyLogo = "https://res.cloudinary.com/dygbnwcyj/image/upload/v1752483284/image_rx0mkl_zm8w4a.png";
-    const companyName = "";
+    const companyName = "Skills Connect";
 
     const html = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fb; padding: 32px 0;">
@@ -358,7 +357,7 @@ exports.sendRescheduleEmails = async ({
                 ` : ""}
               </table>
               <div style="margin: 18px 0 18px 0;">
-                <a href="#" style="display: inline-block; background: linear-gradient(90deg,#006691,#22b8ba); color:#fff; font-weight:600; padding:12px 34px; border-radius:12px; text-decoration:none; font-size:1.03rem; letter-spacing:0.5px; box-shadow:0 2px 8px #22b8ba22;">Add to Calendar</a>
+                
               </div>
               <div style="font-size:0.95rem; color:#888; margin: 12px 0 0 0;">You will find a calendar invitation attached to this email.</div>
               <div style="margin-top:32px; color:#aaa; font-size:13px; text-align:center;">
