@@ -3,9 +3,8 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
 const db = require('../config/customSlots');
-const auth = require('../middleware/adminAuth'); // JWT admin check
+const auth = require('../middleware/adminAuth'); 
 
-// All routes below this line require authentication
 router.use(auth);
 
 // Slot management
@@ -18,7 +17,7 @@ router.get('/slots/:id/bookings', adminController.getBookingsForSlot);
 router.get('/bookings', adminController.getAllBookings);
 router.post('/bookings/:id/accept', adminController.acceptBooking);
 
-// router.post('/bookings/:id/reject', adminController.rejectBooking); // <-- remove or comment out Reject
+// router.post('/bookings/:id/reject', adminController.rejectBooking); 
 router.post('/bookings/:id/set-link', adminController.setBookingMeetLink);
 
 // ADD RESCHEDULE ENDPOINT

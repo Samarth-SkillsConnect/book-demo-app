@@ -15,6 +15,7 @@ function timeToMinutes(t) {
   const [h, m] = t.split(':').map(Number);
   return h * 60 + m;
 }
+
 function minutesToTime(m) {
   const h = String(Math.floor(m / 60)).padStart(2, '0');
   const min = String(m % 60).padStart(2, '0');
@@ -231,7 +232,6 @@ exports.rescheduleBooking = async (req, res) => {
 };
 
 
-
 // Reject booking
 exports.rejectBooking = async (req, res) => {
   const { id } = req.params;
@@ -276,82 +276,6 @@ exports.getAllBookings = async (req, res) => {
   }
 };
 
-// exports.bulkCreateSlots = async (req, res) => {
-//   try {
-//     const { daysConfig } = req.body;
-//     if (!daysConfig || !Array.isArray(daysConfig)) {
-//       return res.status(400).json({ message: 'Missing daysConfig.' });
-//     }
-
-//     const today = new Date();
-//     const endDate = new Date(today);
-//     endDate.setMonth(today.getMonth() + 6);
-
-//     let createdCount = 0, skippedCount = 0, deletedCount = 0;
-//     let slotsToInsert = [];
-//     let slotsToDelete = [];
-
-//     for (const config of daysConfig) {
-//       const weekdayNum = weekdayMap[config.day];
-//       if (!weekdayNum) continue;
-
-//       // --- DELETE ALL FUTURE SLOTS for this day_of_week with no bookings ---
-//       // Find all future slots for this day_of_week
-//       const [oldSlots] = await pool.query(
-//         `SELECT id FROM demo_slots WHERE day_of_week = ? AND date >= CURDATE()`,
-//         [config.day]
-//       );
-//       for (const slot of oldSlots) {
-//         const [bookings] = await pool.query(
-//           `SELECT id FROM bookings WHERE slot_id = ?`,
-//           [slot.id]
-//         );
-//         if (bookings.length === 0) {
-//           await pool.query(`DELETE FROM demo_slots WHERE id = ?`, [slot.id]);
-//           deletedCount++;
-//         }
-//       }
-
-//       // --- Handle "weekly-off": just delete, do not create new slots ---
-//       if (config.status === "weekly-off") continue;
-//       if (config.status !== "active") continue;
-
-//       // --- GENERATE AND INSERT NEW SLOTS ---
-//       for (let d = new Date(today); d <= endDate; d.setDate(d.getDate() + 1)) {
-//         const weekday = d.getDay() === 0 ? 7 : d.getDay();
-//         if (weekday === weekdayNum) {
-//           const dateStr = d.toISOString().slice(0, 10);
-//           const slots = generateSlotsForDate(dateStr, config.start, config.end, Number(config.interval));
-//           for (const slot of slots) {
-//             // Avoid exact duplicates (date, start_time, end_time)
-//             const [rows] = await pool.query(
-//               `SELECT id FROM demo_slots WHERE date = ? AND start_time = ? AND end_time = ?`,
-//               [slot.date, slot.start_time, slot.end_time]
-//             );
-//             if (rows.length === 0) {
-//               await pool.query(
-//                 `INSERT INTO demo_slots (date, start_time, end_time, is_booked, day_of_week, day_status, interval_minutes)
-//                  VALUES (?, ?, ?, 0, ?, ?, ?)`,
-//                 [slot.date, slot.start_time, slot.end_time, config.day, config.status, config.interval]
-//               );
-//               createdCount++;
-//             } else {
-//               skippedCount++;
-//             }
-//           }
-//         }
-//       }
-//     }
-//     res.json({
-//       message: `Deleted ${deletedCount} old slots. Created ${createdCount} new slots. Skipped ${skippedCount} duplicates.`,
-//     });
-//   } catch (err) {
-//     console.error('Error in bulkCreateSlots:', err);
-//     res.status(500).json({ message: 'Error generating slots.' });
-//   }
-// };
-
-
 exports.bulkCreateSlots = async (req, res) => {
   try {
     const { daysConfig } = req.body;
@@ -361,7 +285,7 @@ exports.bulkCreateSlots = async (req, res) => {
 
     const today = new Date();
     const endDate = new Date(today);
-    endDate.setMonth(today.getMonth() + 6);
+    endDate.setMonth(today.getMonth() + 3);
 
     let createdCount = 0, skippedCount = 0, deletedCount = 0;
     let slotsToInsert = [];
@@ -441,7 +365,6 @@ exports.bulkCreateSlots = async (req, res) => {
 };
 
 
-
 // Delete all slots for a given day of week (e.g., "mon")
 exports.deleteSlotsByDayOfWeek = async (req, res) => {
   const { day } = req.params; // "mon", "tue", etc.
@@ -513,11 +436,9 @@ exports.createOrCloseCustomSlot = async (req, res) => {
         );
       }
 
-      // 2. Remove existing demo_slots for that date
+      // Remove existing demo_slots for that date
       await pool.query(`DELETE FROM demo_slots WHERE date = ?`, [date]);
-      // 3. Generate new slots for that date using start/end/interval
-      // (Assume default interval 10min, or parametrize if you want)
-      const interval = 10; // minutes, or get from req.body
+      const interval = 10; 
       const slots = generateSlotsForDate(date, start, end, interval);
       for (const slot of slots) {
         await pool.query(

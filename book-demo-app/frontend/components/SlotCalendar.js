@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+
 export default function SlotCalendar() {
   const [slots, setSlots] = useState([]);
   const [availableDates, setAvailableDates] = useState(new Set());
@@ -75,6 +77,7 @@ export default function SlotCalendar() {
       <style jsx>{`
         .calendar-available {
           background: #e8fff1;
+          color:green;
           border-radius: 50%;
         }
       `}</style>

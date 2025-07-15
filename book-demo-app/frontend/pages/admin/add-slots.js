@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect } from "react";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -30,7 +29,8 @@ export default function AddSlotsPage() {
   );
 
   function getAuthHeader() {
-    const token = typeof window !== 'undefined' ? localStorage.getItem("adminToken") : null;
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
     return token ? { Authorization: `Bearer ${token}` } : {};
   }
 
@@ -91,7 +91,7 @@ export default function AddSlotsPage() {
   async function fetchInactiveDays() {
     try {
       const res = await fetch(`${API_BASE_URL}/api/admin/slots/days-status`, {
-        headers: { ...getAuthHeader() }
+        headers: { ...getAuthHeader() },
       });
       const data = await res.json();
       setInactiveDays(data.inactiveDays || []);
@@ -102,7 +102,7 @@ export default function AddSlotsPage() {
 
   async function fetchDaySlotsConfig() {
     const res = await fetch(`${API_BASE_URL}/api/admin/slots/recurring`, {
-      headers: { ...getAuthHeader() }
+      headers: { ...getAuthHeader() },
     });
     const data = await res.json();
     const slots = Array.isArray(data) ? data : data.slots || [];
@@ -136,11 +136,13 @@ export default function AddSlotsPage() {
     setIsLoadingCustomSlots(true);
     try {
       const res = await fetch(`${API_BASE_URL}/api/admin/slots/custom`, {
-        headers: { ...getAuthHeader() }
+        headers: { ...getAuthHeader() },
       });
       if (!res.ok) throw new Error("Failed to fetch custom slots");
       const data = await res.json();
-      setAllCustomSlots(Array.isArray(data.slots) ? data.slots : (Array.isArray(data) ? data : []));
+      setAllCustomSlots(
+        Array.isArray(data.slots) ? data.slots : Array.isArray(data) ? data : []
+      );
     } catch (err) {
       setAllCustomSlots([]);
     }
@@ -161,7 +163,7 @@ export default function AddSlotsPage() {
           `${API_BASE_URL}/api/admin/slots/day/${dayToDelete}`,
           {
             method: "DELETE",
-            headers: { ...getAuthHeader() }
+            headers: { ...getAuthHeader() },
           }
         );
         const data = await res.json();
@@ -171,10 +173,15 @@ export default function AddSlotsPage() {
           );
           await fetchInactiveDays();
         } else {
-          setDeleteDayMsg(data.message || "Failed to delete slots for this day because a booking already exists.");
+          setDeleteDayMsg(
+            data.message ||
+              "Failed to delete slots for this day because a booking already exists."
+          );
         }
       } catch (err) {
-        setDeleteDayMsg("Error deleting slots for that day. Because a booking exists.");
+        setDeleteDayMsg(
+          "Error deleting slots for that day. Because a booking exists."
+        );
       }
       setCreatedSlots((prev) =>
         prev.filter((slot) => !slot.days.includes(dayToDelete))
@@ -289,44 +296,44 @@ export default function AddSlotsPage() {
     setCustomSlots((prev) => prev.filter((_, i) => i !== idx));
   }
 
-  function updateDaySlotsFromPopup() {
-    if (editIdx !== null) {
-      const slot = createdSlots.length
-        ? createdSlots.find((s) => s.days.includes(daySlots[editIdx].day))
-        : slotDraft;
-      if (slot) {
-        setDaySlots((prev) =>
-          prev.map((d, i) =>
-            i === editIdx
-              ? {
-                ...d,
-                start: slot.start,
-                end: slot.end,
-                interval: slot.interval,
-                status: slot.status,
-              }
-              : d
-          )
-        );
-      }
-    } else {
-      setDaySlots((prev) =>
-        prev.map((d) => {
-          const slot = createdSlots.find((s) => s.days.includes(d.day));
-          if (slot) {
-            return {
-              ...d,
-              start: slot.start,
-              end: slot.end,
-              interval: slot.interval,
-              status: slot.status,
-            };
-          }
-          return d;
-        })
-      );
-    }
-  }
+  // function updateDaySlotsFromPopup() {
+  //   if (editIdx !== null) {
+  //     const slot = createdSlots.length
+  //       ? createdSlots.find((s) => s.days.includes(daySlots[editIdx].day))
+  //       : slotDraft;
+  //     if (slot) {
+  //       setDaySlots((prev) =>
+  //         prev.map((d, i) =>
+  //           i === editIdx
+  //             ? {
+  //               ...d,
+  //               start: slot.start,
+  //               end: slot.end,
+  //               interval: slot.interval,
+  //               status: slot.status,
+  //             }
+  //             : d
+  //         )
+  //       );
+  //     }
+  //   } else {
+  //     setDaySlots((prev) =>
+  //       prev.map((d) => {
+  //         const slot = createdSlots.find((s) => s.days.includes(d.day));
+  //         if (slot) {
+  //           return {
+  //             ...d,
+  //             start: slot.start,
+  //             end: slot.end,
+  //             interval: slot.interval,
+  //             status: slot.status,
+  //           };
+  //         }
+  //         return d;
+  //       })
+  //     );
+  //   }
+  // }
 
   async function saveRecurringSlotsToBackend() {
     setShowBulkSaveConfirm(false);
@@ -336,21 +343,23 @@ export default function AddSlotsPage() {
     if (editIdx !== null) {
       const editedDay = daySlots[editIdx].day;
       const slot = createdSlots.length > 0 ? createdSlots[0] : slotDraft;
-      daysConfig = [{
-        day: editedDay,
-        status: slot.status,
-        start: slot.start,
-        end: slot.end,
-        interval: slot.interval,
-      }];
+      daysConfig = [
+        {
+          day: editedDay,
+          status: slot.status,
+          start: slot.start,
+          end: slot.end,
+          interval: slot.interval,
+        },
+      ];
     } else {
-      daysConfig = createdSlots.flatMap(slot =>
-        slot.days.map(day => ({
+      daysConfig = createdSlots.flatMap((slot) =>
+        slot.days.map((day) => ({
           day,
           status: slot.status,
           start: slot.start,
           end: slot.end,
-          interval: slot.interval
+          interval: slot.interval,
         }))
       );
     }
@@ -360,7 +369,7 @@ export default function AddSlotsPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...getAuthHeader()
+          ...getAuthHeader(),
         },
         body: JSON.stringify({ daysConfig }),
       });
@@ -400,13 +409,13 @@ export default function AddSlotsPage() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              ...getAuthHeader()
+              ...getAuthHeader(),
             },
             body: JSON.stringify({
               date: slot.date,
               start: slot.start,
               end: slot.end,
-              openClose: "open"
+              openClose: "open",
             }),
           });
         } else if (slot.openClose === "close") {
@@ -414,17 +423,19 @@ export default function AddSlotsPage() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              ...getAuthHeader()
+              ...getAuthHeader(),
             },
             body: JSON.stringify({
               date: slot.date,
-              openClose: "close"
+              openClose: "close",
             }),
           });
         }
         data = await res.json();
         if (!res.ok) {
-          setCustomSaveMsg(data.message || "Failed to create or close custom slot.");
+          setCustomSaveMsg(
+            data.message || "Failed to create or close custom slot."
+          );
           setSavingCustom(false);
           return;
         }
@@ -441,12 +452,8 @@ export default function AddSlotsPage() {
   // ---- UI ----
   return (
     <main className="min-h-screen w-full flex flex-col items-center justify-start py-12 bg-gray-300">
-      <section
-        className="relative w-full max-w-7xl mx-auto rounded-xl bg-white/95 backdrop-blur-xl shadow-2xl border-2 p-2 sm:p-8 animate-fade-in-up overflow-visible"
-      >
-        <div
-          className="pointer-events-none absolute inset-0 rounded-xl border-2 border-transparent"
-        ></div>
+      <section className="relative w-full max-w-7xl mx-auto rounded-xl bg-white/95 backdrop-blur-xl shadow-2xl border-2 p-2 sm:p-8 animate-fade-in-up overflow-visible">
+        <div className="pointer-events-none absolute inset-0 rounded-xl border-2 border-transparent"></div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4 z-10 relative">
           <h1 className="text-xl sm:text-4xl font-bold drop-shadow text-[#005e6a] tracking-wide">
             Slot Settings
@@ -504,12 +511,24 @@ export default function AddSlotsPage() {
             </colgroup>
             <thead>
               <tr className="bg-[#f5fafd] text-[#005e6a]">
-                <th className="p-3 border border-[#c5e7ef] text-left text-base font-semibold">Day</th>
-                <th className="p-3 border border-[#c5e7ef] text-left text-base font-semibold">Start Time</th>
-                <th className="p-3 border border-[#c5e7ef] text-left text-base font-semibold">End Time</th>
-                <th className="p-3 border border-[#c5e7ef] text-left text-base font-semibold">Time Interval</th>
-                <th className="p-3 border border-[#c5e7ef] text-center text-base font-semibold">Status</th>
-                <th className="p-3 border border-[#c5e7ef] text-center text-base font-semibold">Actions</th>
+                <th className="p-3 border border-[#c5e7ef] text-left text-base font-semibold">
+                  Day
+                </th>
+                <th className="p-3 border border-[#c5e7ef] text-left text-base font-semibold">
+                  Start Time
+                </th>
+                <th className="p-3 border border-[#c5e7ef] text-left text-base font-semibold">
+                  End Time
+                </th>
+                <th className="p-3 border border-[#c5e7ef] text-left text-base font-semibold">
+                  Time Interval
+                </th>
+                <th className="p-3 border border-[#c5e7ef] text-center text-base font-semibold">
+                  Status
+                </th>
+                <th className="p-3 border border-[#c5e7ef] text-center text-base font-semibold">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -524,21 +543,27 @@ export default function AddSlotsPage() {
                       {slot.name}
                     </td>
                     <td className="p-3 border border-[#e0f2f7] text-base">
-                      {isInactive || slot.status === "inactive" || slot.status === "weekly-off" ? (
+                      {isInactive ||
+                      slot.status === "inactive" ||
+                      slot.status === "weekly-off" ? (
                         <span className="text-gray-400 font-semibold">-</span>
                       ) : (
                         slot.start
                       )}
                     </td>
                     <td className="p-3 border border-[#e0f2f7] text-base">
-                      {isInactive || slot.status === "inactive" || slot.status === "weekly-off" ? (
+                      {isInactive ||
+                      slot.status === "inactive" ||
+                      slot.status === "weekly-off" ? (
                         <span className="text-gray-400 font-semibold">-</span>
                       ) : (
                         slot.end
                       )}
                     </td>
                     <td className="p-3 border border-[#e0f2f7] text-base">
-                      {isInactive || slot.status === "inactive" || slot.status === "weekly-off" ? (
+                      {isInactive ||
+                      slot.status === "inactive" ||
+                      slot.status === "weekly-off" ? (
                         <span className="text-gray-400 font-semibold">-</span>
                       ) : (
                         `${slot.interval} min`
@@ -546,18 +571,19 @@ export default function AddSlotsPage() {
                     </td>
                     <td className="p-3 border border-[#e0f2f7] text-center">
                       <span
-                        className={`inline-block px-3 py-1 rounded font-bold text-xs w-24 text-center ${isInactive || slot.status === "inactive"
-                          ? "bg-red-100 text-red-600"
-                          : slot.status === "active"
+                        className={`inline-block px-3 py-1 rounded font-bold text-xs w-24 text-center ${
+                          isInactive || slot.status === "inactive"
+                            ? "bg-red-100 text-red-600"
+                            : slot.status === "active"
                             ? "bg-green-100 text-green-700"
                             : "bg-gray-200 text-gray-700"
-                          }`}
+                        }`}
                       >
                         {isInactive || slot.status === "inactive"
                           ? "Inactive"
                           : slot.status === "active"
-                            ? "Active"
-                            : "Weekly Off"}
+                          ? "Active"
+                          : "Weekly Off"}
                       </span>
                     </td>
                     <td className="p-3 border border-[#e0f2f7] text-center">
@@ -584,20 +610,32 @@ export default function AddSlotsPage() {
         </div>
 
         {/* ---- Custom Slots Table (always visible, below main table) ---- */}
-        <div className="mt-8 overflow-x-auto bg-white rounded-xl shadow-xl border-2 border-[#bfe7ef] overflow-hidden"
-          style={{ minWidth: "600px", width: "100%", maxWidth: "100%" }}>
-          <h2 className="text-2xl font-bold text-[#005e6a] mb-4 text-center">All Custom Slots</h2>
+        <div
+          className="mt-8 overflow-x-auto bg-white rounded-xl shadow-xl border-2 border-[#bfe7ef] overflow-hidden"
+          style={{ minWidth: "600px", width: "100%", maxWidth: "100%" }}
+        >
+          <h2 className="text-2xl font-bold text-[#005e6a] mb-4 text-center">
+            All Custom Slots
+          </h2>
           {isLoadingCustomSlots ? (
             <div className="text-center text-gray-500 py-12">Loading...</div>
           ) : allCustomSlots.length === 0 ? (
-            <div className="text-center text-gray-500 py-12">No custom slots created yet.</div>
+            <div className="text-center text-gray-500 py-12">
+              No custom slots created yet.
+            </div>
           ) : (
             <table className="min-w-[600px] w-full border border-[#bfe7ef] rounded-xl shadow text-sm bg-white">
               <thead>
                 <tr className="bg-[#f5fafd] text-[#005e6a]">
-                  <th className="p-3 border border-[#c5e7ef] text-left">Date</th>
-                  <th className="p-3 border border-[#c5e7ef] text-left">Open/Close</th>
-                  <th className="p-3 border border-[#c5e7ef] text-left">Start</th>
+                  <th className="p-3 border border-[#c5e7ef] text-left">
+                    Date
+                  </th>
+                  <th className="p-3 border border-[#c5e7ef] text-left">
+                    Open/Close
+                  </th>
+                  <th className="p-3 border border-[#c5e7ef] text-left">
+                    Start
+                  </th>
                   <th className="p-3 border border-[#c5e7ef] text-left">End</th>
                 </tr>
               </thead>
@@ -605,9 +643,15 @@ export default function AddSlotsPage() {
                 {allCustomSlots.map((slot, idx) => (
                   <tr key={idx} className="border-b border-[#e0f2f7]">
                     <td className="p-3 border border-[#e0f2f7]">{slot.date}</td>
-                    <td className="p-3 border border-[#e0f2f7] capitalize">{slot.openClose}</td>
-                    <td className="p-3 border border-[#e0f2f7]">{slot.start || "-"}</td>
-                    <td className="p-3 border border-[#e0f2f7]">{slot.end || "-"}</td>
+                    <td className="p-3 border border-[#e0f2f7] capitalize">
+                      {slot.openClose}
+                    </td>
+                    <td className="p-3 border border-[#e0f2f7]">
+                      {slot.start || "-"}
+                    </td>
+                    <td className="p-3 border border-[#e0f2f7]">
+                      {slot.end || "-"}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -615,8 +659,6 @@ export default function AddSlotsPage() {
           )}
         </div>
 
-        {/* --- Rest of code: Add Custom Slot Modal, Set Bulk Modal, Confirm Delete Modal, etc. --- */}
-        {/* ...existing modals and feedback messages... */}
         {/* Add Custom Slot Popup */}
         {showAddCustomSlotPopup && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
@@ -628,10 +670,14 @@ export default function AddSlotsPage() {
               >
                 &times;
               </button>
-              <h2 className="text-lg font-bold text-[#005e6a] mb-2">Add Custom Slot</h2>
+              <h2 className="text-lg font-bold text-[#005e6a] mb-2">
+                Add Custom Slot
+              </h2>
               <div className="flex flex-col md:flex-row gap-4 items-end">
                 <div className="flex flex-col">
-                  <label className="font-semibold text-[#005e6a] mb-1">Date</label>
+                  <label className="font-semibold text-[#005e6a] mb-1">
+                    Date
+                  </label>
                   <input
                     type="date"
                     name="date"
@@ -641,7 +687,9 @@ export default function AddSlotsPage() {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="font-semibold text-[#005e6a] mb-1">Open/Close</label>
+                  <label className="font-semibold text-[#005e6a] mb-1">
+                    Open/Close
+                  </label>
                   <div className="flex gap-2 mt-1">
                     <label className="flex items-center gap-1">
                       <input
@@ -670,7 +718,9 @@ export default function AddSlotsPage() {
                 {customSlotDraft.openClose === "open" && (
                   <>
                     <div className="flex flex-col">
-                      <label className="font-semibold text-[#005e6a] mb-1">Start Time</label>
+                      <label className="font-semibold text-[#005e6a] mb-1">
+                        Start Time
+                      </label>
                       <input
                         type="time"
                         name="start"
@@ -680,7 +730,9 @@ export default function AddSlotsPage() {
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label className="font-semibold text-[#005e6a] mb-1">End Time</label>
+                      <label className="font-semibold text-[#005e6a] mb-1">
+                        End Time
+                      </label>
                       <input
                         type="time"
                         name="end"
@@ -710,34 +762,60 @@ export default function AddSlotsPage() {
               </div>
               {customSlots.length > 0 && (
                 <div className="mt-8">
-                  <h2 className="text-lg font-bold text-[#005e6a] mb-2">Slots to Create</h2>
+                  <h2 className="text-lg font-bold text-[#005e6a] mb-2">
+                    Slots to Create
+                  </h2>
                   <div className="overflow-x-auto">
                     <table className="min-w-[600px] w-full border-1 border-[#bfe7ef]  rounded-xl  text-sm bg-white">
                       <thead>
                         <tr className="bg-[#f5fafd] text-[#005e6a]">
-                          <th className="p-3 border border-[#c5e7ef] text-left">Date</th>
-                          <th className="p-3 border border-[#c5e7ef] text-left">Open/Close</th>
-                          <th className="p-3 border border-[#c5e7ef] text-left">Start</th>
-                          <th className="p-3 border border-[#c5e7ef] text-left">End</th>
-                          <th className="p-3 border border-[#c5e7ef] text-left">Status</th>
-                          <th className="p-3 border border-[#c5e7ef] text-center">Delete</th>
+                          <th className="p-3 border border-[#c5e7ef] text-left">
+                            Date
+                          </th>
+                          <th className="p-3 border border-[#c5e7ef] text-left">
+                            Open/Close
+                          </th>
+                          <th className="p-3 border border-[#c5e7ef] text-left">
+                            Start
+                          </th>
+                          <th className="p-3 border border-[#c5e7ef] text-left">
+                            End
+                          </th>
+                          <th className="p-3 border border-[#c5e7ef] text-left">
+                            Status
+                          </th>
+                          <th className="p-3 border border-[#c5e7ef] text-center">
+                            Delete
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         {customSlots.map((slot, idx) => (
                           <tr key={idx} className="border-b border-[#e0f2f7]">
-                            <td className="p-3 border border-[#e0f2f7]">{slot.date}</td>
-                            <td className="p-3 border border-[#e0f2f7] capitalize">{slot.openClose}</td>
-                            <td className="p-3 border border-[#e0f2f7]">{slot.start || "-"}</td>
-                            <td className="p-3 border border-[#e0f2f7]">{slot.end || "-"}</td>
+                            <td className="p-3 border border-[#e0f2f7]">
+                              {slot.date}
+                            </td>
+                            <td className="p-3 border border-[#e0f2f7] capitalize">
+                              {slot.openClose}
+                            </td>
+                            <td className="p-3 border border-[#e0f2f7]">
+                              {slot.start || "-"}
+                            </td>
+                            <td className="p-3 border border-[#e0f2f7]">
+                              {slot.end || "-"}
+                            </td>
                             <td className="p-3 border border-[#e0f2f7]">
                               <span
-                                className={`inline-block px-3 py-1 rounded font-bold text-xs w-20 text-center ${slot.status === "active"
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-red-100 text-red-600"
-                                  }`}
+                                className={`inline-block px-3 py-1 rounded font-bold text-xs w-20 text-center ${
+                                  slot.status === "active"
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-red-100 text-red-600"
+                                }`}
                               >
-                                {(slot.status ?? "active").charAt(0).toUpperCase() + (slot.status ?? "active").slice(1)}
+                                {(slot.status ?? "active")
+                                  .charAt(0)
+                                  .toUpperCase() +
+                                  (slot.status ?? "active").slice(1)}
                               </span>
                             </td>
                             <td className="p-3 border border-[#e0f2f7] text-center">
@@ -765,7 +843,9 @@ export default function AddSlotsPage() {
                 </button>
               </div>
               {customSaveMsg && (
-                <div className="mt-3 text-center font-semibold text-blue-700 flex ">{customSaveMsg}</div>
+                <div className="mt-3 text-center font-semibold text-blue-700 flex ">
+                  {customSaveMsg}
+                </div>
               )}
             </div>
           </div>
@@ -774,11 +854,14 @@ export default function AddSlotsPage() {
         {showDeleteDayConfirm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
             <div className="bg-white rounded-xl shadow-xl p-8 max-w-sm w-full border border-[#bfe7ef] text-center">
-              <h2 className="text-xl font-bold text-red-700 mb-4">Confirm Deletion</h2>
+              <h2 className="text-xl font-bold text-red-700 mb-4">
+                Confirm Deletion
+              </h2>
               <p className="mb-6">
                 Do you really want to delete all slots for{" "}
                 <span className="font-bold text-[#005e6a]">
-                  {pendingDeleteDayIdx !== null && daySlots[pendingDeleteDayIdx].name}
+                  {pendingDeleteDayIdx !== null &&
+                    daySlots[pendingDeleteDayIdx].name}
                 </span>
                 ?
               </p>
@@ -813,9 +896,7 @@ export default function AddSlotsPage() {
         {/* Set Slots Bulk Modal */}
         {showSetSlots && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div
-              className="bg-white rounded-2xl shadow-xl p-8 max-w-2xl w-full relative border border-[#bfe7ef] overflow-y-auto max-h-[90vh]"
-            >
+            <div className="bg-white rounded-2xl shadow-xl p-8 max-w-2xl w-full relative border border-[#bfe7ef] overflow-y-auto max-h-[90vh]">
               <button
                 className="absolute top-3 right-3 text-gray-400 hover:text-black text-2xl"
                 onClick={() => {
@@ -835,7 +916,9 @@ export default function AddSlotsPage() {
               >
                 &times;
               </button>
-              <h2 className="text-2xl font-bold mb-4 text-[#005e6a] text-center">Set Recurring Slots</h2>
+              <h2 className="text-2xl font-bold mb-4 text-[#005e6a] text-center">
+                Set Recurring Slots
+              </h2>
               {/* Recurring Slots Creation Box */}
               <div className="bg-[#f5fafd] rounded-xl border border-[#bfe7ef] p-6 mb-6">
                 {/* Recurring Slots Creation Box */}
@@ -843,7 +926,9 @@ export default function AddSlotsPage() {
                   <div className="flex flex-col gap-4">
                     {/* Days checkboxes */}
                     <div>
-                      <label className="font-semibold text-[#005e6a] mb-1 block">Select Days</label>
+                      <label className="font-semibold text-[#005e6a] mb-1 block">
+                        Select Days
+                      </label>
                       <div className="flex flex-wrap gap-3">
                         {weekDays.map((d) => {
                           let isUsed = false;
@@ -879,7 +964,9 @@ export default function AddSlotsPage() {
                     {slotDraft.status !== "weekly-off" && (
                       <div className="flex gap-4 items-center">
                         <div className="flex flex-col flex-1">
-                          <label className="font-semibold text-[#005e6a] mb-1">Start Time</label>
+                          <label className="font-semibold text-[#005e6a] mb-1">
+                            Start Time
+                          </label>
                           <input
                             type="time"
                             name="start"
@@ -889,7 +976,9 @@ export default function AddSlotsPage() {
                           />
                         </div>
                         <div className="flex flex-col flex-1">
-                          <label className="font-semibold text-[#005e6a] mb-1">End Time</label>
+                          <label className="font-semibold text-[#005e6a] mb-1">
+                            End Time
+                          </label>
                           <input
                             type="time"
                             name="end"
@@ -903,7 +992,9 @@ export default function AddSlotsPage() {
                     {/* Slot interval */}
                     {slotDraft.status !== "weekly-off" && (
                       <div className="flex flex-col mt-3">
-                        <label className="font-semibold text-[#005e6a] mb-1">Slot Time Interval</label>
+                        <label className="font-semibold text-[#005e6a] mb-1">
+                          Slot Time Interval
+                        </label>
                         <select
                           name="interval"
                           value={slotDraft.interval}
@@ -920,25 +1011,29 @@ export default function AddSlotsPage() {
                     )}
                     {/* Status */}
                     <div className="flex flex-col mt-3">
-                      <label className="font-semibold text-[#005e6a] mb-1">Status</label>
+                      <label className="font-semibold text-[#005e6a] mb-1">
+                        Status
+                      </label>
                       <div className="flex gap-2 mt-1">
                         <button
                           type="button"
                           onClick={() => handleSlotStatusChange("active")}
-                          className={`px-3 py-1 rounded font-semibold text-xs border ${slotDraft.status === "active"
-                            ? "bg-green-100 text-green-700 border-green-400"
-                            : "bg-white text-gray-600 border-gray-300"
-                            }`}
+                          className={`px-3 py-1 rounded font-semibold text-xs border ${
+                            slotDraft.status === "active"
+                              ? "bg-green-100 text-green-700 border-green-400"
+                              : "bg-white text-gray-600 border-gray-300"
+                          }`}
                         >
                           Active
                         </button>
                         <button
                           type="button"
                           onClick={() => handleSlotStatusChange("weekly-off")}
-                          className={`px-3 py-1 rounded font-semibold text-xs border ${slotDraft.status === "weekly-off"
-                            ? "bg-gray-200 text-gray-700 border-gray-400"
-                            : "bg-white text-gray-600 border-gray-300"
-                            }`}
+                          className={`px-3 py-1 rounded font-semibold text-xs border ${
+                            slotDraft.status === "weekly-off"
+                              ? "bg-gray-200 text-gray-700 border-gray-400"
+                              : "bg-white text-gray-600 border-gray-300"
+                          }`}
                         >
                           Weekly Off
                         </button>
@@ -961,10 +1056,8 @@ export default function AddSlotsPage() {
                     </div>
                   </div>
                 </div>
-                {/* Render Created Recurring Slots */}
-                {/* ... */}
               </div>
-              {/* Render Created Recurring Slots */}
+              
               {createdSlots.length > 0 && (
                 <div className="mb-4">
                   {createdSlots.map((slot, idx) => (
@@ -981,20 +1074,35 @@ export default function AddSlotsPage() {
                       </button>
                       <div className="text-sm">
                         <span className="font-bold text-[#005e6a]">Days: </span>
-                        {slot.days.map((d) => weekDays.find((w) => w.key === d)?.name).join(", ")}
+                        {slot.days
+                          .map((d) => weekDays.find((w) => w.key === d)?.name)
+                          .join(", ")}
                       </div>
                       <div className="text-sm">
                         {slot.status === "weekly-off" ? (
-                          <span className="text-gray-600 font-semibold">Weekly Off</span>
+                          <span className="text-gray-600 font-semibold">
+                            Weekly Off
+                          </span>
                         ) : (
                           <>
-                            <span className="font-bold text-[#005e6a]">Start:</span> {slot.start}
+                            <span className="font-bold text-[#005e6a]">
+                              Start:
+                            </span>{" "}
+                            {slot.start}
                             &nbsp;&nbsp;
-                            <span className="font-bold text-[#005e6a]">End:</span> {slot.end}
+                            <span className="font-bold text-[#005e6a]">
+                              End:
+                            </span>{" "}
+                            {slot.end}
                             &nbsp;&nbsp;
-                            <span className="font-bold text-[#005e6a]">Interval:</span> {slot.interval} min
-                            &nbsp;&nbsp;
-                            <span className="font-bold text-[#005e6a]">Status:</span> {slot.status}
+                            <span className="font-bold text-[#005e6a]">
+                              Interval:
+                            </span>{" "}
+                            {slot.interval} min &nbsp;&nbsp;
+                            <span className="font-bold text-[#005e6a]">
+                              Status:
+                            </span>{" "}
+                            {slot.status}
                           </>
                         )}
                       </div>
@@ -1013,7 +1121,9 @@ export default function AddSlotsPage() {
                 </button>
               </div>
               {bulkSaveMsg && (
-                <div className="mt-3 text-center font-semibold text-blue-700">{bulkSaveMsg}</div>
+                <div className="mt-3 text-center font-semibold text-blue-700">
+                  {bulkSaveMsg}
+                </div>
               )}
             </div>
           </div>
@@ -1023,9 +1133,12 @@ export default function AddSlotsPage() {
         {showBulkSaveConfirm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
             <div className="bg-white rounded-xl shadow-xl p-8 max-w-sm w-full border border-[#bfe7ef] text-center">
-              <h2 className="text-xl font-bold text-[#005e6a] mb-4">Please Wait</h2>
+              <h2 className="text-xl font-bold text-[#005e6a] mb-4">
+                Please Wait
+              </h2>
               <p className="mb-6">
-                Your slots will be created shortly.<br />
+                Your slots will be created shortly.
+                <br />
                 Do you want to continue?
               </p>
               <div className="flex gap-4 justify-center">

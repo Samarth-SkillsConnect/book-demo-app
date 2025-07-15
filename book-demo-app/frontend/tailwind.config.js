@@ -1,18 +1,4 @@
-// /** @type {import('tailwindcss').Config} */
-// module.exports = {
-//   content: [
-//     "./pages/**/*.{js,jsx}",
-//     "./components/**/*.{js,jsx}"
-//   ],
-//   theme: {
-//     extend: {},
-//   },
-//   plugins: [],
-// }
 
-
-
-// /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./pages/**/*.{js,jsx,ts,tsx}",        
@@ -67,11 +53,5 @@ module.exports = {
         "background": "#f0f4fa",
       }
     }
-  // },
-  // plugins: [
-  //   require('@tailwindcss/forms'),
-  //   require('@tailwindcss/typography'),
-  //   require('@tailwindcss/aspect-ratio'),
-  // ],
 }
 }
